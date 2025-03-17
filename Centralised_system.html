@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Links Page</title>
     <style>
         body {
@@ -8,35 +10,47 @@
             color: black;
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
-        }
-        .icon-container {
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            max-width: 800px;
-            margin: auto;
+            align-items: center;
+            flex-direction: column;
         }
+
+        .icon-container {
+            display: grid;
+            grid-template-columns: repeat(5, 150px); /* 5 icons per row */
+            grid-gap: 30px;
+            justify-items: start; /* Skews to the left */
+            max-width: 850px; /* Increased max width to accommodate 5 icons */
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
         .icon-link {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 150px;
         }
+
         img {
             width: 100px; /* Consistent width */
             height: 100px; /* Consistent height */
             object-fit: cover; /* Ensures all images fill the space evenly */
             border-radius: 10px; /* Optional: Rounds edges for uniformity */
         }
+
         p {
             margin: 10px 0;
         }
+
         a {
             text-decoration: none;
             color: black;
         }
+
     </style>
 </head>
 <body>
