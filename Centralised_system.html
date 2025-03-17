@@ -16,34 +16,36 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            padding: 20px;
         }
 
         .icon-container {
             display: grid;
-            grid-template-columns: repeat(5, 150px); /* 5 icons per row */
-            grid-gap: 30px;
-            justify-items: start; /* Skews to the left */
-            max-width: 850px; /* Increased max width to accommodate 5 icons */
-            padding-top: 50px;
-            padding-bottom: 50px;
+            grid-template-columns: repeat(4, 220px); /* 4 items per row */
+            grid-gap: 40px; /* Wider gap between items */
+            justify-content: center;
+            max-width: 1000px;
+            margin: 20px 0; /* Top and bottom margins */
+            padding: 20px 0; /* Padding to balance the sides */
         }
 
         .icon-link {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 150px;
+            width: 220px;
         }
 
         img {
-            width: 100px; /* Consistent width */
-            height: 100px; /* Consistent height */
-            object-fit: cover; /* Ensures all images fill the space evenly */
-            border-radius: 10px; /* Optional: Rounds edges for uniformity */
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
         p {
             margin: 10px 0;
+            font-size: 24px;
         }
 
         a {
