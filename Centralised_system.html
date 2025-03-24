@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Links Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: white;
-            color: black;
-            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            font-family: 'Open Sans', sans-serif;
             text-align: center;
             margin: 0;
             height: 100vh;
@@ -35,26 +36,35 @@
             align-items: center;
             width: 220px;
             height: 220px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .icon-link:hover {
+            transform: scale(1.05);
         }
 
         img {
             width: 140px;
             height: 140px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
         p {
-            margin: 10px 0;
-            font-size: 24px;
+            margin: 15px 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: #027bc4;
         }
 
         a {
             text-decoration: none;
-            color: black;
+            color: #027bc4;
         }
 
     </style>
