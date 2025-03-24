@@ -66,6 +66,44 @@
             color: #027bc4;
         }
 
+        @media screen and (max-width: 1000px) {
+            .icon-container {
+                grid-template-columns: repeat(3, 220px);
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            .icon-container {
+                grid-template-columns: repeat(2, 220px);
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            body {
+                padding: 20px;
+            }
+
+            .icon-container {
+                grid-template-columns: repeat(2, 160px);
+                grid-gap: 10px;
+            }
+
+            .icon-link {
+                width: 160px;
+                height: 160px;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+            p {
+                font-size: 16px;
+                margin: 10px 0;
+            }
+        }
+
     </style>
 </head>
 <body>
