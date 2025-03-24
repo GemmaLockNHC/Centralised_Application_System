@@ -21,12 +21,12 @@
 
         .icon-container {
             display: grid;
-            grid-template-columns: repeat(4, 220px); /* 4 items per row */
-            grid-gap: 40px; /* Wider gap between items */
+            grid-template-columns: repeat(4, 220px);
+            grid-gap: 40px;
             justify-content: center;
             max-width: 1000px;
-            margin: 20px 0; /* Top and bottom margins */
-            padding: 20px 0; /* Padding to balance the sides */
+            margin: 20px 0;
+            padding: 20px 0;
         }
 
         .icon-link {
@@ -34,6 +34,7 @@
             flex-direction: column;
             align-items: center;
             width: 220px;
+            height: 220px;
         }
 
         img {
@@ -46,6 +47,9 @@
         p {
             margin: 10px 0;
             font-size: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         a {
@@ -76,14 +80,14 @@
         <!-- Wiki -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
-                <img src="Neighbourhood_Care_Wiki_Logo.png" alt="Wiki Icon">
+                <img src="Neighbourhood_Care_Wiki_Logo.webp" alt="Wiki Icon">
                 <p>Wiki</p>
             </a>
         </div>
 
         <!-- Employment Hero -->
         <div class="icon-link">
-            <a href="https://secure.employmenthero.com/app/v2/organisations/412276/dashboard" target="_blank">
+            <a href="https://employmenthero.com/" target="_blank">
                 <img src="Employment_Hero_Logo.webp" alt="Employment Hero Icon">
                 <p>Employment Hero</p>
             </a>
@@ -100,7 +104,7 @@
         <!-- Employee Handbook -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
-                <img src="Neighbourhood_Care_Wiki_Logo.png" alt="Employee Handbook Icon">
+                <img src="Neighbourhood_Care_Wiki_Logo.webp" alt="Employee Handbook Icon">
                 <p>Employee Handbook</p>
             </a>
         </div>
