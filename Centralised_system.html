@@ -15,6 +15,7 @@
 
         body {
             background-color: #ffffff;
+            color: #333333;
             font-family: 'Open Sans', sans-serif;
             text-align: center;
             display: flex;
@@ -54,7 +55,19 @@
             object-fit: cover;
             border-radius: 15px;
             box-shadow: 0 0 14px 2px rgba(0, 0, 0, 0.38);
+            transition: filter 0.2s ease-out;
             margin-bottom: 6px;
+        }
+
+        .icon-link:active img {
+            filter: brightness(0.7);
+        }
+
+        /* Remove hover effect on mobile devices */
+        @media (hover: hover) {
+            .icon-link:hover img {
+                filter: brightness(0.7);
+            }
         }
 
         p {
@@ -73,6 +86,12 @@
             color: #027bc4;
         }
 
+        @media screen and (max-width: 1000px) {
+            .icon-container {
+                grid-template-columns: repeat(3, 220px);
+            }
+        }
+
         @media screen and (max-width: 750px) {
             .icon-container {
                 grid-template-columns: repeat(2, 220px);
@@ -87,6 +106,7 @@
             .icon-container {
                 grid-template-columns: repeat(2, 160px);
                 gap: 1px;
+                margin: 0;
             }
 
             .icon-link {
@@ -102,6 +122,7 @@
 
             p {
                 font-size: 16px;
+                margin: 0;
             }
         }
     </style>
@@ -142,7 +163,7 @@
 
         <!-- Xero Me -->
         <div class="icon-link">
-            <a href="https://apps.apple.com/au/app/xero-me/id991901494" target="_blank">
+            <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me Icon">
                 <p>Xero Me</p>
             </a>
@@ -158,11 +179,58 @@
 
         <!-- vGo App -->
         <div class="icon-link">
-            <a href="https://apps.apple.com/au/app/vgo/id1491287174" target="_blank">
+            <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
                 <img src="/static/Visual_Care_Logo.png" alt="vGo App Icon">
                 <p>vGo App</p>
             </a>
         </div>
     </div>
+
+    <script>
+        // Function to detect device type
+        function detectDeviceType() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
+            const isAndroid = /android/.test(userAgent);
+            const isGoogle = /googlebot/.test(userAgent);
+            const isMobile = /mobile|android|iphone|ipad|ipod/.test(userAgent);
+            
+            return {
+                isIOS,
+                isAndroid,
+                isGoogle,
+                isMobile,
+                isDesktop: !isMobile
+            };
+        }
+
+        // Function to set appropriate links
+        function setDeviceSpecificLinks() {
+            const deviceType = detectDeviceType();
+            const xeroMeLink = document.getElementById('xero-me-link');
+            const vGoLink = document.getElementById('vgo-link');
+
+            // Set Xero Me link
+            if (deviceType.isIOS) {
+                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
+            } else if (deviceType.isAndroid) {
+                xeroMeLink.href = 'https://play.google.com/store/apps/details?id=com.xero.xerome';
+            } else {
+                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
+            }
+
+            // Set vGo link
+            if (deviceType.isIOS) {
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+            } else if (deviceType.isAndroid) {
+                vGoLink.href = 'https://play.google.com/store/apps/details?id=com.visualcare.vgo';
+            } else {
+                vGoLink.href = 'https://visualcare.com.au/vgo';
+            }
+        }
+
+        // Set links when page loads
+        window.addEventListener('load', setDeviceSpecificLinks);
+    </script>
 </body>
 </html>
