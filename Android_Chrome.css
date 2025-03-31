@@ -90,7 +90,7 @@ a {
 
 @media screen and (max-width: 500px) {
     body {
-        padding: 56px 6px 1px 6px;
+        padding: calc(env(safe-area-inset-top) + 56px) 6px calc(env(safe-area-inset-bottom) + 1px) 6px;
     }
 
     .icon-container {
@@ -112,25 +112,4 @@ a {
     p {
         font-size: 16px;
     }
-}
-
-/* samsung_internet.css - Styles specific to Samsung Internet */
-@import "android_chrome.css";
-
-body {
-    font-size: 18px;
-    -webkit-font-smoothing: antialiased;
-    padding: 60px 10px 5px 10px;
-}
-
-img {
-    border-radius: 10px;
-}
-
-p {
-    font-size: 18px;
-}
-
-.icon-link {
-    touch-action: manipulation;
 }
