@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Links Page</title>
+
+    <!-- Imports a specific font from Google, based on the Neighbourhood Care website (https://nhcare.com.au/). -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* Resets the margins and padding of the entire page. */
         html, body {
             margin: 0;
             padding: 0;
@@ -13,6 +17,7 @@
             overflow: hidden;
         }
 
+        /* Defines the styling of the main body of the page, based on the Neighbourhood Care website (https://nhcare.com.au/). */
         body {
             background-color: #ffffff;
             color: #333333;
@@ -31,6 +36,7 @@
             left: 0;
         }
 
+        /* Defines a grid container for the hyperlinks' icons on the page */
         .icon-container {
             display: grid;
             grid-template-columns: repeat(3, 220px);
@@ -41,6 +47,7 @@
             padding: 0;
         }
 
+        /* Defines the styling of the hyperlinks' icons on the page. */
         .icon-link {
             display: flex;
             flex-direction: column;
@@ -59,16 +66,19 @@
             margin-bottom: 6px;
         }
 
+        /* Makes the hyperlinks' icons darker when they are clicked by the page's users. */
         .icon-link:active img {
             filter: brightness(0.7);
         }
 
+        /* Makes the hyperlinks' icons darker when they are hovered over by the page's users. */
         @media (hover: hover) {
             .icon-link:hover img {
                 filter: brightness(0.7);
             }
         }
 
+        /* Defines text under the icons of the hyperlinks on the page. */
         p {
             margin: 0;
             font-size: 20px;
@@ -79,12 +89,14 @@
             text-overflow: ellipsis;
             color: #027bc4;
         }
-
+        
+        /* Removes the default styling of links on the page. */
         a {
             text-decoration: none;
             color: #027bc4;
         }
 
+        /* Defines the styling of the hyperlinks' icons on the page for small screens. */
         @media screen and (max-width: 750px) {
             .icon-container {
                 grid-template-columns: repeat(2, 220px);
@@ -114,6 +126,7 @@
 </head>
 <body>
     <div class="icon-container">
+        <!-- Defines the icon and text for the Google Drive hyperlink. -->
         <div class="icon-link">
             <a href="https://drive.google.com/drive/" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
@@ -121,6 +134,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the Visual Care hyperlink. -->
         <div class="icon-link">
             <a href="https://app.visualcare.com.au/login.php?c_2fa" target="_blank">
                 <img src="/static/Visual_Care_Logo.png" alt="Visual Care">
@@ -128,6 +142,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the Neighbourhood Care Wiki hyperlink. -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Wiki">
@@ -135,6 +150,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the Employment Hero hyperlink. -->
         <div class="icon-link">
             <a href="https://employmenthero.com/" target="_blank">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
@@ -142,6 +158,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the Xero Me hyperlink. -->
         <div class="icon-link">
             <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
@@ -149,6 +166,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the Employee Handbook hyperlink. -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Employee Handbook">
@@ -156,6 +174,7 @@
             </a>
         </div>
 
+        <!-- Defines the icon and text for the vGo hyperlink. -->
         <div class="icon-link">
             <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
                 <img src="/static/Visual_Care_Logo.png" alt="vGo">
@@ -165,6 +184,7 @@
     </div>
 
     <script>
+        /* Detects the device on which the page is being viewed on by its user. */
         function detectDeviceType() {
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
@@ -173,6 +193,7 @@
             return { isIOS, isAndroid };
         }
 
+        /* Updates the links of the Xero Me and vGo hyperlinks depending on the device on which the page is being viewed by its user. */ 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
             const xeroMeLink = document.getElementById('xero-me-link');
@@ -190,6 +211,7 @@
             }
         }
 
+        /* Runs the function above (i.e. 'setDeviceSpecificLinks') after the page loads. */
         window.addEventListener('load', setDeviceSpecificLinks);
     </script>
 </body>
