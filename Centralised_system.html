@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Links Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             background-color: #ffffff;
             color: #333333;
             font-family: 'Open Sans', sans-serif;
             text-align: center;
-            margin: 0;
-            height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 0 6px 6px 6px;
+            align-items: flex-start;
+            padding: calc(env(safe-area-inset-top) + 56px) 6px calc(env(safe-area-inset-bottom) + 1px) 6px;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         .icon-container {
@@ -27,7 +37,7 @@
             gap: 1px;
             justify-content: center;
             max-width: 1200px;
-            margin: -20px 0 0 0;
+            margin: 0;
             padding: 0;
         }
 
@@ -90,13 +100,13 @@
 
         @media screen and (max-width: 500px) {
             body {
-                padding: 0 6px 6px 6px;
+                padding: calc(env(safe-area-inset-top) + 56px) 6px calc(env(safe-area-inset-bottom) + 1px) 6px;
             }
 
             .icon-container {
                 grid-template-columns: repeat(2, 160px);
                 gap: 1px;
-                margin: -20px 0 0 0;
+                margin: 0;
             }
 
             .icon-link {
