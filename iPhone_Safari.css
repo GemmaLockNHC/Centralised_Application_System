@@ -1,0 +1,111 @@
+/* iphone_safari.css - Styles specific to iPhone Safari */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: calc(env(safe-area-inset-top) + 56px) 6px calc(env(safe-area-inset-bottom) + 1px) 6px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.icon-container {
+    display: grid;
+    grid-template-columns: repeat(3, 220px);
+    gap: 1px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0;
+    padding: 0;
+}
+
+.icon-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 220px;
+    height: 220px;
+}
+
+img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 0 14px 2px rgba(0, 0, 0, 0.38);
+    transition: filter 0.2s ease-out;
+    margin-bottom: 6px;
+}
+
+.icon-link:active img {
+    filter: brightness(0.7);
+}
+
+@media (hover: hover) {
+    .icon-link:hover img {
+        filter: brightness(0.7);
+    }
+}
+
+p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #027bc4;
+}
+
+a {
+    text-decoration: none;
+    color: #027bc4;
+}
+
+@media screen and (max-width: 1000px) {
+    .icon-container {
+        grid-template-columns: repeat(3, 220px);
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .icon-container {
+        grid-template-columns: repeat(2, 220px);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        padding: calc(env(safe-area-inset-top) + 56px) 6px calc(env(safe-area-inset-bottom) + 1px) 6px;
+    }
+    .icon-container {
+        grid-template-columns: repeat(2, 160px);
+    }
+    .icon-link {
+        width: 160px;
+        height: 160px;
+    }
+    img {
+        width: 100px;
+        height: 100px;
+    }
+    p {
+        font-size: 16px;
+    }
+}
