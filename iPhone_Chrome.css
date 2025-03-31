@@ -8,13 +8,12 @@ html, body {
 
 body {
     background-color: #ffffff;
-    color: #333333;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 64px 6px 8px 6px; /* Adjusted safe-area insets for Chrome */
+    padding: 64px 6px 8px 6px;
     box-sizing: border-box;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -48,7 +47,6 @@ img {
     object-fit: cover;
     border-radius: 15px;
     box-shadow: 0 0 14px 2px rgba(0, 0, 0, 0.38);
-    transition: filter 0.2s ease-out;
     margin-bottom: 6px;
 }
 
@@ -94,17 +92,23 @@ a {
     body {
         padding: 64px 6px 8px 6px;
     }
+
     .icon-container {
         grid-template-columns: repeat(2, 160px);
+        gap: 1px;
     }
+
     .icon-link {
         width: 160px;
         height: 160px;
     }
+
     img {
         width: 100px;
         height: 100px;
+        margin-bottom: 6px;
     }
+
     p {
         font-size: 16px;
     }
