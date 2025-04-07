@@ -8,7 +8,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Serve ONLY index.html at root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'Centralised_System_Mobile.html'));
+  res.sendFile(path.join(__dirname, 'public', 'Centralised_System.html'));
 });
 
 // Block any other routes
