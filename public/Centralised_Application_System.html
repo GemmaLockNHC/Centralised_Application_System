@@ -224,17 +224,18 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
+                        let appWasOpened = false;
                         
                         // Try to open the app
                         window.location.href = appUrl;
                         
                         // If app doesn't open within 1 second, redirect to App Store
                         setTimeout(() => {
-                            if (document.hidden) {
-                                return; // App was opened successfully
-                            }
-                            if (appStoreUrl) {
-                                window.location.href = appStoreUrl;
+                            if (!document.hidden) {
+                                // Only redirect if we're still on the page (app didn't open)
+                                if (appStoreUrl) {
+                                    window.location.href = appStoreUrl;
+                                }
                             }
                         }, 1000);
                     });
