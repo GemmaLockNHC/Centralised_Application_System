@@ -192,15 +192,15 @@
             const sharedDriveLink = document.querySelector('a[href*="drive.google.com/drive/shared-drives"]');
 
             if (deviceType.isIOS) {
-                // iOS specific URL schemes
+                // iOS specific URLs
                 xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                vGoLink.href = 'vgo://';
+                vWorkerLink.href = 'vworker://';
                 employmentHeroLink.href = 'https://employmenthero.com/app';
                 googleDriveLink.href = 'https://drive.google.com';
                 sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
             } else if (deviceType.isAndroid) {
-                // Android specific URL schemes
+                // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
                 vGoLink.href = 'com.visualcare.vgo://';
                 vWorkerLink.href = 'vds.mycareconnectv2://';
@@ -217,25 +217,32 @@
                 sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
             }
 
-            // Add click handlers for iOS apps
+            // Add fallback for iOS apps
             if (deviceType.isIOS) {
                 [vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const appStoreUrl = this.href;
+                        const appUrl = this.href;
+                        const appStoreUrl = this.getAttribute('data-appstore-url');
                         
-                        // Create an iframe to try opening the app
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = appStoreUrl.replace('https://apps.apple.com', 'com.visualcare');
-                        document.body.appendChild(iframe);
+                        // Try to open the app
+                        window.location.href = appUrl;
                         
-                        // Remove the iframe after a short delay
+                        // If app doesn't open within 1 second, redirect to App Store
                         setTimeout(() => {
-                            document.body.removeChild(iframe);
-                        }, 100);
+                            if (document.hidden) {
+                                return; // App was opened successfully
+                            }
+                            if (appStoreUrl) {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 1000);
                     });
                 });
+
+                // Set App Store fallback URLs
+                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
             }
         }
 
