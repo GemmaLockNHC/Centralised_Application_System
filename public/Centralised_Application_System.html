@@ -191,28 +191,53 @@
             const googleDriveLink = document.querySelector('a[href*="drive.google.com/drive/"]');
             const sharedDriveLink = document.querySelector('a[href*="drive.google.com/drive/shared-drives"]');
 
-            // Universal links that should work on both platforms
-            xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
-            vGoLink.href = 'https://visualcare.com.au/vgo';
-            vWorkerLink.href = 'https://visualcare.com.au/vworker';
-            employmentHeroLink.href = 'https://employmenthero.com/app';
-            googleDriveLink.href = 'https://drive.google.com';
-            sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+            if (deviceType.isIOS) {
+                // iOS specific URL schemes
+                xeroMeLink.href = 'xerome://';
+                vGoLink.href = 'vgo://';
+                vWorkerLink.href = 'vworker://';
+                employmentHeroLink.href = 'https://employmenthero.com/app';
+                googleDriveLink.href = 'https://drive.google.com';
+                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+            } else if (deviceType.isAndroid) {
+                // Android specific URL schemes
+                xeroMeLink.href = 'com.xero.xerome://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+                employmentHeroLink.href = 'https://employmenthero.com/app';
+                googleDriveLink.href = 'https://drive.google.com';
+                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+            } else {
+                // Desktop URLs remain unchanged
+                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
+                vGoLink.href = 'https://visualcare.com.au/vgo';
+                vWorkerLink.href = 'https://visualcare.com.au/vworker';
+                employmentHeroLink.href = 'https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE';
+                googleDriveLink.href = 'https://drive.google.com/drive/';
+                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+            }
 
-            // Add click handlers to attempt app opening
-            [xeroMeLink, vGoLink, vWorkerLink, employmentHeroLink, googleDriveLink, sharedDriveLink].forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const url = this.href;
-                    
-                    // Try to open the app first
-                    if (deviceType.isIOS) {
-                        window.location.href = url;
-                    } else if (deviceType.isAndroid) {
-                        window.location.href = url;
-                    }
+            // Add fallback for iOS apps
+            if (deviceType.isIOS) {
+                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const appUrl = this.href;
+                        const webUrl = this.getAttribute('data-web-url') || 'https://apps.apple.com/au/app/';
+                        
+                        // Try to open the app
+                        window.location.href = appUrl;
+                        
+                        // If app doesn't open within 1 second, redirect to App Store
+                        setTimeout(() => {
+                            if (document.hidden) {
+                                return; // App was opened successfully
+                            }
+                            window.location.href = webUrl;
+                        }, 1000);
+                    });
                 });
-            });
+            }
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
