@@ -224,20 +224,24 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
-                        let appWasOpened = false;
+                        const startTime = Date.now();
+                        let hasRedirected = false;
                         
                         // Try to open the app
                         window.location.href = appUrl;
                         
-                        // If app doesn't open within 1 second, redirect to App Store
-                        setTimeout(() => {
-                            if (!document.hidden) {
-                                // Only redirect if we're still on the page (app didn't open)
-                                if (appStoreUrl) {
+                        // Check if we should redirect to App Store
+                        const checkRedirect = setInterval(() => {
+                            // If more than 2 seconds have passed and we haven't redirected yet
+                            if (Date.now() - startTime > 2000 && !hasRedirected) {
+                                clearInterval(checkRedirect);
+                                // Only redirect if we're still on the page
+                                if (document.visibilityState === 'visible') {
+                                    hasRedirected = true;
                                     window.location.href = appStoreUrl;
                                 }
                             }
-                        }, 1000);
+                        }, 100);
                     });
                 });
 
