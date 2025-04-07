@@ -126,19 +126,27 @@
 </head>
 <body>
     <div class="icon-container">
-        <!-- Defines the icon and text for the Google Drive hyperlink. -->
+        <!-- Defines the icon and text for the Google Drive (My Drive) hyperlink. -->
         <div class="icon-link">
             <a href="https://drive.google.com/drive/" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
-                <p>Google Drive</p>
+                <p>My Drive</p>
             </a>
         </div>
 
-        <!-- Defines the icon and text for the Visual Care hyperlink. -->
+        <!-- Defines the icon and text for the Google Drive (Shared Drive) hyperlink. -->
         <div class="icon-link">
-            <a href="https://app.visualcare.com.au/login.php?c_2fa" target="_blank">
-                <img src="/static/Visual_Care_Logo.png" alt="Visual Care">
-                <p>Visual Care</p>
+            <a href="https://drive.google.com/drive/shared-drives" target="_blank">
+                <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
+                <p>Shared Drive</p>
+            </a>
+        </div>
+
+        <!-- Defines the icon and text for the vWorker hyperlink. -->
+        <div class="icon-link">
+            <a id="vworker-link" href="https://visualcare.com.au/vworker" target="_blank">
+                <img src="/static/vWorker_Logo.webp" alt="vWorker">
+                <p>vWorker</p>
             </a>
         </div>
 
@@ -152,7 +160,7 @@
 
         <!-- Defines the icon and text for the Employment Hero hyperlink. -->
         <div class="icon-link">
-            <a href="https://employmenthero.com/" target="_blank">
+            <a id="employment-hero-link" href="https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE" target="_blank">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
             </a>
@@ -177,8 +185,8 @@
         <!-- Defines the icon and text for the vGo hyperlink. -->
         <div class="icon-link">
             <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
-                <img src="/static/Visual_Care_Logo.png" alt="vGo">
-                <p>vGo App</p>
+                <img src="/static/vGo_Logo.webp" alt="vGo">
+                <p>vGo</p>
             </a>
         </div>
     </div>
@@ -193,21 +201,29 @@
             return { isIOS, isAndroid };
         }
 
-        /* Updates the links of the Xero Me and vGo hyperlinks depending on the device on which the page is being viewed by its user. */ 
+        /* Updates the links of the Xero Me, vWorker, Employment Hero and vGo hyperlinks depending on the device on which the page is being viewed by its user. */ 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
             const xeroMeLink = document.getElementById('xero-me-link');
             const vGoLink = document.getElementById('vgo-link');
+            const vWorkerLink = document.getElementById('vworker-link');
+            const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
                 xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
                 vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                employmentHeroLink.href = 'https://apps.apple.com/au/app/employment-hero-work/id1171253572';
             } else if (deviceType.isAndroid) {
                 xeroMeLink.href = 'https://play.google.com/store/apps/details?id=com.xero.xerome';
                 vGoLink.href = 'https://play.google.com/store/apps/details?id=com.visualcare.vgo';
+                vWorkerLink.href = 'https://play.google.com/store/apps/details?id=vds.mycareconnectv2&hl=en_AU';
+                employmentHeroLink.href = 'http://play.google.com/store/apps/details?id=com.ehlife&hl=en_AU';
             } else {
                 xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
                 vGoLink.href = 'https://visualcare.com.au/vgo';
+                vWorkerLink.href = 'https://visualcare.com.au/vworker';
+                employmentHeroLink.href = 'https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE';
             }
         }
 
