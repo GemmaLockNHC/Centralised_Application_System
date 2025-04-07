@@ -188,22 +188,33 @@
             const vGoLink = document.getElementById('vgo-link');
             const vWorkerLink = document.getElementById('vworker-link');
             const employmentHeroLink = document.getElementById('employment-hero-link');
+            const googleDriveLink = document.querySelector('a[href*="drive.google.com/drive/"]');
+            const sharedDriveLink = document.querySelector('a[href*="drive.google.com/drive/shared-drives"]');
 
             if (deviceType.isIOS) {
-                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
-                employmentHeroLink.href = 'https://apps.apple.com/au/app/employment-hero-work/id1171253572';
+                // iOS app URL schemes
+                xeroMeLink.href = 'xero-me://';
+                vGoLink.href = 'vgo://';
+                vWorkerLink.href = 'vworker://';
+                employmentHeroLink.href = 'employmenthero://';
+                googleDriveLink.href = 'googledrive://';
+                sharedDriveLink.href = 'googledrive://shared-drives';
             } else if (deviceType.isAndroid) {
-                xeroMeLink.href = 'https://play.google.com/store/apps/details?id=com.xero.xerome';
-                vGoLink.href = 'https://play.google.com/store/apps/details?id=com.visualcare.vgo';
-                vWorkerLink.href = 'https://play.google.com/store/apps/details?id=vds.mycareconnectv2&hl=en_AU';
-                employmentHeroLink.href = 'http://play.google.com/store/apps/details?id=com.ehlife&hl=en_AU';
+                // Android app URL schemes
+                xeroMeLink.href = 'com.xero.xerome://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+                employmentHeroLink.href = 'com.ehlife://';
+                googleDriveLink.href = 'com.google.android.apps.docs://';
+                sharedDriveLink.href = 'com.google.android.apps.docs://shared-drives';
             } else {
+                // Desktop URLs remain unchanged
                 xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
                 vGoLink.href = 'https://visualcare.com.au/vgo';
                 vWorkerLink.href = 'https://visualcare.com.au/vworker';
                 employmentHeroLink.href = 'https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE';
+                googleDriveLink.href = 'https://drive.google.com/drive/';
+                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
             }
         }
 
