@@ -10,7 +10,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Serve ONLY Centralised_System.html at root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'Centralised_System.html'));
+  res.sendFile(path.join(__dirname, 'public', 'Centralised_Application_System.html'));
 });
 
 // Block any other routes
