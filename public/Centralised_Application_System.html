@@ -194,19 +194,19 @@
             if (deviceType.isIOS) {
                 // iOS specific URLs
                 xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'id1491287174://';
-                vWorkerLink.href = 'id1219959010://';
-                employmentHeroLink.href = 'https://employmenthero.com/app';
-                googleDriveLink.href = 'https://drive.google.com';
-                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                employmentHeroLink.href = 'employmenthero://';
+                googleDriveLink.href = 'googledrive://';
+                sharedDriveLink.href = 'googledrive://shared-drives';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
                 vGoLink.href = 'com.visualcare.vgo://';
                 vWorkerLink.href = 'vds.mycareconnectv2://';
-                employmentHeroLink.href = 'https://employmenthero.com/app';
-                googleDriveLink.href = 'https://drive.google.com';
-                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
+                employmentHeroLink.href = 'com.ehlife://';
+                googleDriveLink.href = 'com.google.android.apps.docs://';
+                sharedDriveLink.href = 'com.google.android.apps.docs://shared-drives';
             } else {
                 // Desktop URLs remain unchanged
                 xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
@@ -219,7 +219,7 @@
 
             // Add fallback for iOS apps
             if (deviceType.isIOS) {
-                [vGoLink, vWorkerLink].forEach(link => {
+                [xeroMeLink, vGoLink, vWorkerLink, employmentHeroLink, googleDriveLink, sharedDriveLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const appUrl = this.href;
@@ -241,8 +241,12 @@
                 });
 
                 // Set App Store fallback URLs
+                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
                 vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
+                employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
+                googleDriveLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-drive/id507874739');
+                sharedDriveLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-drive/id507874739');
             }
         }
 
