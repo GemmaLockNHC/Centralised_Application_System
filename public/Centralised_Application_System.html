@@ -194,8 +194,8 @@
             if (deviceType.isIOS) {
                 // iOS specific URL schemes
                 xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                vWorkerLink.href = 'com.visualcare.vworker://';
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
                 employmentHeroLink.href = 'https://employmenthero.com/app';
                 googleDriveLink.href = 'https://drive.google.com';
                 sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
@@ -217,32 +217,25 @@
                 sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
             }
 
-            // Add fallback for iOS apps
+            // Add click handlers for iOS apps
             if (deviceType.isIOS) {
-                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
+                [vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const appUrl = this.href;
-                        const appStoreUrl = this.getAttribute('data-appstore-url');
+                        const appStoreUrl = this.href;
                         
-                        // Try to open the app
-                        window.location.href = appUrl;
+                        // Create an iframe to try opening the app
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.src = appStoreUrl.replace('https://apps.apple.com', 'com.visualcare');
+                        document.body.appendChild(iframe);
                         
-                        // If app doesn't open within 1 second, redirect to App Store
+                        // Remove the iframe after a short delay
                         setTimeout(() => {
-                            if (document.hidden) {
-                                return; // App was opened successfully
-                            }
-                            if (appStoreUrl) {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 1000);
+                            document.body.removeChild(iframe);
+                        }, 100);
                     });
                 });
-
-                // Set App Store fallback URLs
-                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
-                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
             }
         }
 
