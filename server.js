@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
 });
 
 // If you have a mobile version or another route, add it here
-app.get('/mobile', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'Centralised_System_Mobile.html'));
-});
+//app.get('/mobile', (req, res) => {
+//  res.sendFile(path.join(__dirname, 'public', 'Centralised_System_Mobile.html'));
+//});
 
 // Block any other routes
 app.use((req, res) => {
