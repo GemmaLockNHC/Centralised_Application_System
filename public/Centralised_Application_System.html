@@ -194,8 +194,8 @@
             if (deviceType.isIOS) {
                 // iOS specific URL schemes
                 xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                vGoLink.href = 'com.visualcare.vgo://';
+                vWorkerLink.href = 'com.visualcare.vworker://';
                 employmentHeroLink.href = 'https://employmenthero.com/app';
                 googleDriveLink.href = 'https://drive.google.com';
                 sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
@@ -223,11 +223,26 @@
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const appUrl = this.href;
+                        const appStoreUrl = this.getAttribute('data-appstore-url');
                         
                         // Try to open the app
                         window.location.href = appUrl;
+                        
+                        // If app doesn't open within 1 second, redirect to App Store
+                        setTimeout(() => {
+                            if (document.hidden) {
+                                return; // App was opened successfully
+                            }
+                            if (appStoreUrl) {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 1000);
                     });
                 });
+
+                // Set App Store fallback URLs
+                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
             }
         }
 
