@@ -5,10 +5,10 @@ const app = express();
 // Use the environment variable for the port or default to 8000 if running locally
 const PORT = process.env.PORT || 8000;
 
-// Serve static files (images, CSS, JS) under /static
-app.use('/static', express.static(path.join(__dirname, 'public')));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve ONLY index.html at root
+// Serve index.html at root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
