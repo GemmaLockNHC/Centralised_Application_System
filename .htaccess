@@ -1,7 +1,7 @@
-# Enable rewrite engine
 RewriteEngine On
+DirectoryIndex Centralised_Application_System.html
 
-# Force HTTPS
+# Enable rewrite engine
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
