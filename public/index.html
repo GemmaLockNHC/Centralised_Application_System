@@ -258,10 +258,10 @@
             const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs
-                xeroMeLink.href = 'xero-me://';
-                vWorkerLink.href = 'vworker://';
-                vGoLink.href = 'vgo://';
+                // iOS specific URLs using Universal Links
+                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
+                vWorkerLink.href = 'https://visualcare.com.au/vworker';
+                vGoLink.href = 'https://visualcare.com.au/vgo';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
