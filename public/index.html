@@ -227,7 +227,25 @@
 
             links.forEach(link => {
                 if (deviceType.isIOS) {
-                    link.href = link.getAttribute('data-ios-url');
+                    const appUrl = link.getAttribute('data-ios-url');
+                    const appStoreUrl = link.getAttribute('data-appstore-url');
+                    
+                    link.href = appUrl;
+                    
+                    // Add click handler for iOS to handle app store fallback
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Try to open the app
+                        window.location.href = appUrl;
+                        
+                        // If app isn't installed, redirect to App Store after a delay
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 2000);
+                    });
                 } else if (deviceType.isAndroid) {
                     link.href = link.getAttribute('data-android-url');
                 }
