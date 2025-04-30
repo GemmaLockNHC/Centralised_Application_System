@@ -158,7 +158,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vworker" target="_blank" 
+            <a href="vds.mycareconnectv2://" target="_blank" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -173,7 +173,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://employmenthero.com/products/hr-software/" target="_blank" 
+            <a href="com.ehlife://" target="_blank" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -181,7 +181,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://www.xero.com/au/xero-me/" target="_blank" 
+            <a href="com.xero.xerome://" target="_blank" 
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -196,7 +196,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vgo" target="_blank" 
+            <a href="com.visualcare.vgo://" target="_blank" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -218,7 +218,7 @@
             const links = document.querySelectorAll('a[data-appstore-url]');
 
             links.forEach(link => {
-                const originalHref = link.getAttribute('href');
+                const appUrl = link.getAttribute('href');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
 
                 if (deviceType.isIOS) {
@@ -227,12 +227,12 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // Try to open the web URL first (apps can intercept this)
-                        window.location.href = originalHref;
+                        // Try to open the app directly
+                        window.location.href = appUrl;
                         
                         // Check if we should redirect to App Store
                         const checkRedirect = setInterval(() => {
-                            if (Date.now() - startTime > 2000 && !hasRedirected) {
+                            if (Date.now() - startTime > 1000 && !hasRedirected) {
                                 clearInterval(checkRedirect);
                                 if (document.visibilityState === 'visible') {
                                     hasRedirected = true;
@@ -242,8 +242,8 @@
                         }, 100);
                     });
                 } else {
-                    // For Android and desktop, just use the original web URL
-                    link.href = originalHref;
+                    // For Android, just use the app URL directly
+                    link.href = appUrl;
                 }
             });
         }
