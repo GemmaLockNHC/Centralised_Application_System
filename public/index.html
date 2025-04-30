@@ -259,9 +259,9 @@
 
             if (deviceType.isIOS) {
                 // iOS specific URLs - using multiple approaches
-                xeroMeLink.href = 'https://xero.me';
-                vWorkerLink.href = 'https://vworker.app';
-                vGoLink.href = 'https://vgo.app';
+                xeroMeLink.href = 'xerome://';
+                vWorkerLink.href = 'vworker://';
+                vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
@@ -279,27 +279,23 @@
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
                         
-                        // Create an iframe for the app URL
+                        // Create an invisible iframe
                         const iframe = document.createElement('iframe');
                         iframe.style.display = 'none';
                         iframe.src = appUrl;
                         document.body.appendChild(iframe);
                         
-                        // Remove the iframe after a short delay
+                        // Try direct URL after a short delay
                         setTimeout(() => {
                             document.body.removeChild(iframe);
+                            window.location.href = appUrl;
                             
-                            // If still visible, try direct URL
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = appUrl;
-                                
-                                // If still visible, try App Store
-                                setTimeout(() => {
-                                    if (document.visibilityState === 'visible') {
-                                        window.location.href = appStoreUrl;
-                                    }
-                                }, 1000);
-                            }
+                            // If still visible, try App Store
+                            setTimeout(() => {
+                                if (document.visibilityState === 'visible') {
+                                    window.location.href = appStoreUrl;
+                                }
+                            }, 1000);
                         }, 100);
                     });
                 });
