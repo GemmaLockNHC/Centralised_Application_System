@@ -144,8 +144,7 @@
 <body>
     <div class="icon-container">
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/" 
-               data-app-url="googledrive://" 
+            <a href="#" 
                data-ios-url="googledrive://" 
                data-android-url="intent://drive.google.com/drive/#Intent;scheme=https;package=com.google.android.apps.docs;end" 
                data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
@@ -155,8 +154,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/shared-drives" 
-               data-app-url="googledrive://shared-drives" 
+            <a href="#" 
                data-ios-url="googledrive://shared-drives" 
                data-android-url="intent://drive.google.com/drive/shared-drives#Intent;scheme=https;package=com.google.android.apps.docs;end" 
                data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
@@ -166,8 +164,9 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vworker" 
-               data-app-url="vworker://"
+            <a href="#" 
+               data-ios-url="vworker://" 
+               data-android-url="intent://#Intent;scheme=vworker;package=au.com.visualcare.vworker;end" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -182,8 +181,9 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://employmenthero.com/products/hr-software/" 
-               data-app-url="employmenthero://"
+            <a href="#" 
+               data-ios-url="employmenthero://" 
+               data-android-url="intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -191,8 +191,9 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://www.xero.com/au/xero-me/" 
-               data-app-url="xero://"
+            <a href="#" 
+               data-ios-url="xero://" 
+               data-android-url="intent://#Intent;scheme=xero;package=com.xero.touch;end" 
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -207,8 +208,9 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vgo" 
-               data-app-url="vgo://"
+            <a href="#" 
+               data-ios-url="vgo://" 
+               data-android-url="intent://#Intent;scheme=vgo;package=au.com.visualcare.vgo;end" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -220,27 +222,27 @@
         function detectDeviceType() {
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod/.test(userAgent);
-            const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
+            const isAndroid = /android/.test(userAgent);
             
-            return { isIOS, isSafari };
+            return { isIOS, isAndroid };
         }
 
-        function openApp(url, appStoreUrl) {
+        function openApp(iosUrl, androidUrl, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS && deviceType.isSafari) {
-                // Try to open the web URL first (apps can intercept this)
-                window.location = url;
+            if (deviceType.isIOS) {
+                // Try to open the app using its iOS URL scheme
+                window.location = iosUrl;
                 
-                // If we're still on the page after 1 second, redirect to App Store
+                // If app isn't installed, redirect to App Store
                 setTimeout(() => {
                     if (document.visibilityState === 'visible') {
                         window.location = appStoreUrl;
                     }
                 }, 1000);
-            } else {
-                // For non-iOS Safari, just use the web URL
-                window.location = url;
+            } else if (deviceType.isAndroid) {
+                // For Android, use the intent URL
+                window.location = androidUrl;
             }
         }
 
@@ -248,12 +250,13 @@
             const links = document.querySelectorAll('a[data-appstore-url]');
             
             links.forEach(link => {
-                const url = link.getAttribute('href');
+                const iosUrl = link.getAttribute('data-ios-url');
+                const androidUrl = link.getAttribute('data-android-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
                 
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    openApp(url, appStoreUrl);
+                    openApp(iosUrl, androidUrl, appStoreUrl);
                 });
             });
         }
