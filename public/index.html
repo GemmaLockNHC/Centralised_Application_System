@@ -258,10 +258,10 @@
             const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs - using direct app schemes
-                xeroMeLink.href = 'xero://';
-                vWorkerLink.href = 'vds://';
-                vGoLink.href = 'vgo://';
+                // iOS specific URLs - using multiple approaches
+                xeroMeLink.href = 'https://xero.me';
+                vWorkerLink.href = 'https://vworker.app';
+                vGoLink.href = 'https://vgo.app';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
@@ -278,7 +278,29 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
-                        openApp(appUrl, appStoreUrl);
+                        
+                        // Create an iframe for the app URL
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.src = appUrl;
+                        document.body.appendChild(iframe);
+                        
+                        // Remove the iframe after a short delay
+                        setTimeout(() => {
+                            document.body.removeChild(iframe);
+                            
+                            // If still visible, try direct URL
+                            if (document.visibilityState === 'visible') {
+                                window.location.href = appUrl;
+                                
+                                // If still visible, try App Store
+                                setTimeout(() => {
+                                    if (document.visibilityState === 'visible') {
+                                        window.location.href = appStoreUrl;
+                                    }
+                                }, 1000);
+                            }
+                        }, 100);
                     });
                 });
 
