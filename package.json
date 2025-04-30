@@ -1,0 +1,11 @@
+{
+  "name": "centralised-application-system",
+  "version": "1.0.0",
+  "description": "Neighbourhood Care Centralised Application System",
+  "scripts": {
+    "start": "echo 'This is a static site' && exit 0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
