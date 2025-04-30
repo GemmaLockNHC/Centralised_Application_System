@@ -214,8 +214,9 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
+            const isChrome = /crios|chrome/.test(userAgent);
             
-            return { isIOS, isAndroid };
+            return { isIOS, isAndroid, isChrome };
         }
 
         function setDeviceSpecificLinks() {
@@ -227,10 +228,19 @@
 
             if (deviceType.isIOS) {
                 // iOS specific URLs
-                xeroMeLink.href = 'xerome://';
-                vWorkerLink.href = 'vds.mycareconnectv2://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                employmentHeroLink.href = 'employmenthero://';
+                if (deviceType.isChrome) {
+                    // For Chrome on iOS, we need to use a different approach
+                    xeroMeLink.href = 'https://xero.me';
+                    vWorkerLink.href = 'https://vworker.app';
+                    vGoLink.href = 'https://vgo.app';
+                    employmentHeroLink.href = 'https://employmenthero.com';
+                } else {
+                    // For Safari and other browsers
+                    xeroMeLink.href = 'xero-me://';
+                    vWorkerLink.href = 'vworker://';
+                    vGoLink.href = 'vgo://';
+                    employmentHeroLink.href = 'employmenthero://';
+                }
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
@@ -247,15 +257,20 @@
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
                         
-                        // Try to open the app
-                        window.location.href = appUrl;
-                        
-                        // If app isn't installed, redirect to App Store after a delay
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 3000); // Increased timeout to 3 seconds
+                        if (deviceType.isChrome) {
+                            // For Chrome, try to open the app first
+                            window.location.href = appUrl;
+                            
+                            // If app isn't installed, redirect to App Store after a delay
+                            setTimeout(() => {
+                                if (document.visibilityState === 'visible') {
+                                    window.location.href = appStoreUrl;
+                                }
+                            }, 1000);
+                        } else {
+                            // For other browsers, use the direct protocol
+                            window.location.href = appUrl;
+                        }
                     });
                 });
 
