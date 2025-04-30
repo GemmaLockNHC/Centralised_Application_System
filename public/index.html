@@ -224,12 +224,25 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // Try to open the app directly
-                        window.location.href = appUrl;
+                        // First try to open the app using a hidden iframe
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.src = appUrl;
+                        document.body.appendChild(iframe);
+                        
+                        // Remove the iframe after a short delay
+                        setTimeout(() => {
+                            document.body.removeChild(iframe);
+                        }, 100);
+                        
+                        // Then try direct window.location
+                        setTimeout(() => {
+                            window.location.href = appUrl;
+                        }, 200);
                         
                         // Check if we should redirect to App Store
                         const checkRedirect = setInterval(() => {
-                            if (Date.now() - startTime > 1000 && !hasRedirected) {
+                            if (Date.now() - startTime > 2000 && !hasRedirected) {
                                 clearInterval(checkRedirect);
                                 if (document.visibilityState === 'visible') {
                                     hasRedirected = true;
