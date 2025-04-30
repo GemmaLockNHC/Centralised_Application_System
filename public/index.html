@@ -227,15 +227,12 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // Create an iframe to handle the app URL
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = appUrl;
-                        document.body.appendChild(iframe);
+                        // First try window.open
+                        window.open(appUrl, '_self');
                         
-                        // Remove the iframe after a short delay
+                        // Then try window.location
                         setTimeout(() => {
-                            document.body.removeChild(iframe);
+                            window.location.href = appUrl;
                         }, 100);
                         
                         // Check if we should redirect to App Store
