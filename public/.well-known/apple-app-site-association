@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "com.xero.touch",
-                "paths": ["/au/xero-me/*"]
+                "paths": ["/me"]
             },
             {
                 "appID": "au.com.visualcare.vgo",
