@@ -1,12 +1,12 @@
 RewriteEngine On
-DirectoryIndex Centralised_Application_System.html
+DirectoryIndex index.html
 
 # Enable rewrite engine
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Redirect root to Centralised_Application_System.html
-RewriteRule ^$ Centralised_Application_System.html [L]
+# Redirect root to index.html
+RewriteRule ^$ index.html [L]
 
 # Security Headers
 Header set X-Content-Type-Options "nosniff"
