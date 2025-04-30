@@ -262,7 +262,7 @@
                 xeroMeLink.href = 'xerome://';
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
-                employmentHeroLink.href = 'employmenthero://';
+                employmentHeroLink.href = 'https://app.employmenthero.com';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
@@ -273,7 +273,7 @@
 
             // Add click handlers for iOS apps
             if (deviceType.isIOS) {
-                [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink].forEach(link => {
+                [xeroMeLink, vWorkerLink, vGoLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const appUrl = this.href;
@@ -324,11 +324,32 @@
                     });
                 });
 
+                // Special handling for Employment Hero
+                employmentHeroLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const appName = this.querySelector('p').textContent;
+                    
+                    // Create a smooth transition effect
+                    this.style.opacity = '0.7';
+                    setTimeout(() => {
+                        this.style.opacity = '1';
+                    }, 200);
+
+                    // Try to open the app directly
+                    window.location.href = 'employmenthero://';
+                    
+                    // If that doesn't work, try the web version
+                    setTimeout(() => {
+                        if (document.visibilityState === 'visible') {
+                            window.location.href = 'https://app.employmenthero.com';
+                        }
+                    }, 1000);
+                });
+
                 // Set App Store fallback URLs
                 xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
                 vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
-                employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
             }
         }
 
