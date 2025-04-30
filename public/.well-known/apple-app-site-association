@@ -1,0 +1,19 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "com.xero.touch",
+                "paths": ["/au/xero-me/*"]
+            },
+            {
+                "appID": "au.com.visualcare.vgo",
+                "paths": ["/vgo/*"]
+            },
+            {
+                "appID": "au.com.visualcare.vworker",
+                "paths": ["/vworker/*"]
+            }
+        ]
+    }
+} 
