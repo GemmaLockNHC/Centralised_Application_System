@@ -164,10 +164,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="#" 
-               data-ios-url="vworker://" 
-               data-android-url="intent://#Intent;scheme=vds.mycareconnectv2;package=au.com.visualcare.vworker;end" 
-               data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
+            <a id="vworker-link" href="#">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
             </a>
@@ -191,10 +188,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="#" 
-               data-ios-url="xerome://" 
-               data-android-url="intent://#Intent;scheme=com.xero.xerome;package=com.xero.touch;end" 
-               data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
+            <a id="xero-me-link" href="#">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -208,10 +202,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="#" 
-               data-ios-url="vgo://" 
-               data-android-url="intent://#Intent;scheme=com.visualcare.vgo;package=au.com.visualcare.vgo;end" 
-               data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
+            <a id="vgo-link" href="#">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
             </a>
@@ -229,23 +220,30 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const links = document.querySelectorAll('a[data-appstore-url]');
-            
-            links.forEach(link => {
-                const iosUrl = link.getAttribute('data-ios-url');
-                const androidUrl = link.getAttribute('data-android-url');
-                const appStoreUrl = link.getAttribute('data-appstore-url');
-                
-                if (deviceType.isIOS) {
-                    link.href = iosUrl;
-                } else if (deviceType.isAndroid) {
-                    link.href = androidUrl;
-                } else {
-                    link.href = appStoreUrl;
-                }
+            const xeroMeLink = document.getElementById('xero-me-link');
+            const vGoLink = document.getElementById('vgo-link');
+            const vWorkerLink = document.getElementById('vworker-link');
 
-                // Add click handler for iOS to handle fallback
-                if (deviceType.isIOS) {
+            if (deviceType.isIOS) {
+                // iOS specific URLs
+                xeroMeLink.href = 'xerome://';
+                vGoLink.href = 'vgo://';
+                vWorkerLink.href = 'vworker://';
+            } else if (deviceType.isAndroid) {
+                // Android specific URLs
+                xeroMeLink.href = 'com.xero.xerome://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+            } else {
+                // Desktop URLs
+                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+            }
+
+            // Add fallback for iOS apps
+            if (deviceType.isIOS) {
+                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const iframe = document.createElement('iframe');
@@ -253,12 +251,12 @@
                         document.body.appendChild(iframe);
                         
                         // Try to open the app
-                        iframe.src = iosUrl;
+                        iframe.src = link.href;
                         
                         // If app isn't installed, redirect to App Store
                         setTimeout(() => {
                             if (document.visibilityState === 'visible') {
-                                window.location.href = appStoreUrl;
+                                window.location.href = link.href.replace('://', '://apps.apple.com/au/app/');
                             }
                         }, 2000);
                         
@@ -267,8 +265,8 @@
                             document.body.removeChild(iframe);
                         }, 3000);
                     });
-                }
-            });
+                });
+            }
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
