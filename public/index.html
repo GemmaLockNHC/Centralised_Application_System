@@ -158,7 +158,11 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vworker" target="_blank" data-app-url="vds.mycareconnectv2://" data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
+            <a href="https://visualcare.com.au/vworker" target="_blank" 
+               data-app-url="https://visualcare.com.au/vworker" 
+               data-ios-url="vds.mycareconnectv2://" 
+               data-android-url="intent://visualcare.com.au/vworker#Intent;scheme=https;package=au.com.visualcare.vworker;end" 
+               data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
             </a>
@@ -172,14 +176,22 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://employmenthero.com/products/hr-software/" target="_blank" data-app-url="com.ehlife://" data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
+            <a href="https://employmenthero.com/products/hr-software/" target="_blank" 
+               data-app-url="https://employmenthero.com/products/hr-software/" 
+               data-ios-url="com.ehlife://" 
+               data-android-url="intent://employmenthero.com/products/hr-software/#Intent;scheme=https;package=com.ehlife;end" 
+               data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a href="https://www.xero.com/au/xero-me/" target="_blank" data-app-url="com.xero.xerome://" data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
+            <a href="https://www.xero.com/au/xero-me/" target="_blank" 
+               data-app-url="https://www.xero.com/au/xero-me/" 
+               data-ios-url="com.xero.xerome://" 
+               data-android-url="intent://www.xero.com/au/xero-me/#Intent;scheme=https;package=com.xero.xerome;end" 
+               data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -193,7 +205,11 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://visualcare.com.au/vgo" target="_blank" data-app-url="com.visualcare.vgo://" data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
+            <a href="https://visualcare.com.au/vgo" target="_blank" 
+               data-app-url="https://visualcare.com.au/vgo" 
+               data-ios-url="com.visualcare.vgo://" 
+               data-android-url="intent://visualcare.com.au/vgo#Intent;scheme=https;package=com.visualcare.vgo;end" 
+               data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
             </a>
@@ -216,6 +232,8 @@
             links.forEach(link => {
                 const originalHref = link.getAttribute('href');
                 const appUrl = link.getAttribute('data-app-url');
+                const iosUrl = link.getAttribute('data-ios-url');
+                const androidUrl = link.getAttribute('data-android-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
 
                 if (deviceType.isIOS) {
@@ -224,25 +242,12 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // First try to open the app using a hidden iframe
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = appUrl;
-                        document.body.appendChild(iframe);
-                        
-                        // Remove the iframe after a short delay
-                        setTimeout(() => {
-                            document.body.removeChild(iframe);
-                        }, 100);
-                        
-                        // Then try direct window.location
-                        setTimeout(() => {
-                            window.location.href = appUrl;
-                        }, 200);
+                        // Try to open the app
+                        window.location.href = iosUrl;
                         
                         // Check if we should redirect to App Store
                         const checkRedirect = setInterval(() => {
-                            if (Date.now() - startTime > 2000 && !hasRedirected) {
+                            if (Date.now() - startTime > 1000 && !hasRedirected) {
                                 clearInterval(checkRedirect);
                                 if (document.visibilityState === 'visible') {
                                     hasRedirected = true;
@@ -255,7 +260,7 @@
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         // Try to open the app
-                        window.location.href = appUrl;
+                        window.location.href = androidUrl;
                         // Fallback to web URL after a short delay
                         setTimeout(() => {
                             if (document.visibilityState === 'visible') {
