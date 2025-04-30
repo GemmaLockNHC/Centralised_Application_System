@@ -215,44 +215,36 @@
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
             const isChrome = /crios|chrome/.test(userAgent);
-            const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
             
-            return { isIOS, isAndroid, isChrome, isSafari };
+            return { isIOS, isAndroid, isChrome };
         }
 
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS) {
-                // First try direct protocol
-                window.location.href = url;
+            if (deviceType.isIOS && deviceType.isChrome) {
+                // For Chrome on iOS, use a specific sequence
+                const startTime = Date.now();
                 
-                // If that doesn't work, try iframe approach
+                // First try window.open
+                const newWindow = window.open(url, '_self');
+                
+                // If that doesn't work, try direct protocol
                 setTimeout(() => {
                     if (document.visibilityState === 'visible') {
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = url;
-                        document.body.appendChild(iframe);
+                        window.location.href = url;
                         
+                        // If still visible, try App Store
                         setTimeout(() => {
-                            document.body.removeChild(iframe);
-                            
-                            // If still visible, try universal link
                             if (document.visibilityState === 'visible') {
-                                const universalLink = url.replace('://', '://app.');
-                                window.location.href = universalLink;
-                                
-                                // Final fallback to App Store
-                                setTimeout(() => {
-                                    if (document.visibilityState === 'visible') {
-                                        window.location.href = appStoreUrl;
-                                    }
-                                }, 1000);
+                                window.location.href = appStoreUrl;
                             }
                         }, 100);
                     }
                 }, 100);
+            } else if (deviceType.isIOS) {
+                // For Safari and other browsers
+                window.location.href = url;
             } else if (deviceType.isAndroid) {
                 window.location.href = url;
             }
