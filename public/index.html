@@ -259,7 +259,7 @@
 
             if (deviceType.isIOS) {
                 // iOS specific URLs - using multiple approaches
-                xeroMeLink.href = 'https://go.xero.com/me';
+                xeroMeLink.href = 'xerome://';
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
@@ -278,25 +278,49 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
+                        const appName = this.querySelector('p').textContent;
                         
-                        // Create an invisible iframe
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = appUrl;
-                        document.body.appendChild(iframe);
-                        
-                        // Try direct URL after a short delay
+                        // Create a smooth transition effect
+                        this.style.opacity = '0.7';
                         setTimeout(() => {
-                            document.body.removeChild(iframe);
-                            window.location.href = appUrl;
-                            
-                            // If still visible, try App Store
-                            setTimeout(() => {
-                                if (document.visibilityState === 'visible') {
+                            this.style.opacity = '1';
+                        }, 200);
+
+                        // Try to open the app
+                        window.location.href = appUrl;
+                        
+                        // If that doesn't work, show a message and redirect to App Store
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                // Create a temporary message
+                                const message = document.createElement('div');
+                                message.style.cssText = `
+                                    position: fixed;
+                                    top: 50%;
+                                    left: 50%;
+                                    transform: translate(-50%, -50%);
+                                    background: rgba(0, 0, 0, 0.8);
+                                    color: white;
+                                    padding: 20px;
+                                    border-radius: 10px;
+                                    text-align: center;
+                                    z-index: 1000;
+                                    font-size: 16px;
+                                    max-width: 80%;
+                                `;
+                                message.innerHTML = `
+                                    <p>Opening ${appName}...</p>
+                                    <p style="font-size: 14px; opacity: 0.8;">If the app doesn't open, you'll be redirected to the App Store</p>
+                                `;
+                                document.body.appendChild(message);
+                                
+                                // Remove message and redirect after a short delay
+                                setTimeout(() => {
+                                    document.body.removeChild(message);
                                     window.location.href = appStoreUrl;
-                                }
-                            }, 1000);
-                        }, 100);
+                                }, 1500);
+                            }
+                        }, 1000);
                     });
                 });
 
