@@ -227,46 +227,8 @@
             return { isIOS, isAndroid };
         }
 
-        function openApp(iosUrl, androidUrl, appStoreUrl) {
-            const deviceType = detectDeviceType();
-            
-            if (deviceType.isIOS) {
-                // Create an iframe to handle the app launch
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-                
-                // Try to open the app
-                iframe.src = iosUrl;
-                
-                // If app isn't installed, redirect to App Store after a short delay
-                setTimeout(() => {
-                    if (document.visibilityState === 'visible') {
-                        window.location.href = appStoreUrl;
-                    }
-                }, 2000);
-                
-                // Clean up the iframe
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 3000);
-            } else if (deviceType.isAndroid) {
-                // For Android, use the intent URL
-                window.location.href = androidUrl;
-                
-                // Fallback to Play Store if app isn't installed
-                setTimeout(() => {
-                    if (document.visibilityState === 'visible') {
-                        window.location.href = appStoreUrl;
-                    }
-                }, 2000);
-            } else {
-                // For desktop or other devices, open the app store
-                window.location.href = appStoreUrl;
-            }
-        }
-
         function setDeviceSpecificLinks() {
+            const deviceType = detectDeviceType();
             const links = document.querySelectorAll('a[data-appstore-url]');
             
             links.forEach(link => {
@@ -274,10 +236,38 @@
                 const androidUrl = link.getAttribute('data-android-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
                 
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    openApp(iosUrl, androidUrl, appStoreUrl);
-                });
+                if (deviceType.isIOS) {
+                    link.href = iosUrl;
+                } else if (deviceType.isAndroid) {
+                    link.href = androidUrl;
+                } else {
+                    link.href = appStoreUrl;
+                }
+
+                // Add click handler for iOS to handle fallback
+                if (deviceType.isIOS) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        document.body.appendChild(iframe);
+                        
+                        // Try to open the app
+                        iframe.src = iosUrl;
+                        
+                        // If app isn't installed, redirect to App Store
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 2000);
+                        
+                        // Clean up the iframe
+                        setTimeout(() => {
+                            document.body.removeChild(iframe);
+                        }, 3000);
+                    });
+                }
             });
         }
 
