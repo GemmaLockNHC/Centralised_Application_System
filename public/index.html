@@ -167,9 +167,6 @@
 
         <div class="icon-link">
             <a href="https://visualcare.com.au/vworker" 
-               data-app-url="vds.mycareconnectv2://" 
-               data-ios-url="vds.mycareconnectv2://" 
-               data-android-url="intent://visualcare.com.au/vworker#Intent;scheme=https;package=au.com.visualcare.vworker;end" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -185,9 +182,6 @@
 
         <div class="icon-link">
             <a href="https://employmenthero.com/products/hr-software/" 
-               data-app-url="com.ehlife://" 
-               data-ios-url="com.ehlife://" 
-               data-android-url="intent://employmenthero.com/products/hr-software/#Intent;scheme=https;package=com.ehlife;end" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -196,9 +190,6 @@
 
         <div class="icon-link">
             <a href="https://www.xero.com/au/xero-me/" 
-               data-app-url="com.xero.xerome://" 
-               data-ios-url="com.xero.xerome://" 
-               data-android-url="intent://www.xero.com/au/xero-me/#Intent;scheme=https;package=com.xero.xerome;end" 
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -214,9 +205,6 @@
 
         <div class="icon-link">
             <a href="https://visualcare.com.au/vgo" 
-               data-app-url="com.visualcare.vgo://" 
-               data-ios-url="com.visualcare.vgo://" 
-               data-android-url="intent://visualcare.com.au/vgo#Intent;scheme=https;package=com.visualcare.vgo;end" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -235,13 +223,10 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const links = document.querySelectorAll('a[data-app-url]');
+            const links = document.querySelectorAll('a[data-appstore-url]');
 
             links.forEach(link => {
                 const originalHref = link.getAttribute('href');
-                const appUrl = link.getAttribute('data-app-url');
-                const iosUrl = link.getAttribute('data-ios-url');
-                const androidUrl = link.getAttribute('data-android-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
 
                 if (deviceType.isIOS) {
@@ -250,8 +235,8 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // Try to open the app
-                        window.location = iosUrl;
+                        // Try to open the web URL (apps can intercept this)
+                        window.location = originalHref;
                         
                         // Check if we should redirect to App Store
                         setTimeout(() => {
@@ -260,20 +245,8 @@
                             }
                         }, 1000);
                     });
-                } else if (deviceType.isAndroid) {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // Try to open the app
-                        window.location = androidUrl;
-                        // Fallback to web URL after a short delay
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location = originalHref;
-                            }
-                        }, 1000);
-                    });
                 } else {
-                    // For desktop, keep the original web URL
+                    // For Android and desktop, just use the original web URL
                     link.href = originalHref;
                 }
             });
