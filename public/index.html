@@ -231,18 +231,38 @@
             const deviceType = detectDeviceType();
             
             if (deviceType.isIOS) {
-                // Try to open the app using its iOS URL scheme
-                window.location = iosUrl;
+                // Create an iframe to handle the app launch
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
                 
-                // If app isn't installed, redirect to App Store
+                // Try to open the app
+                iframe.src = iosUrl;
+                
+                // If app isn't installed, redirect to App Store after a short delay
                 setTimeout(() => {
                     if (document.visibilityState === 'visible') {
-                        window.location = appStoreUrl;
+                        window.location.href = appStoreUrl;
                     }
-                }, 1000);
+                }, 2000);
+                
+                // Clean up the iframe
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 3000);
             } else if (deviceType.isAndroid) {
                 // For Android, use the intent URL
-                window.location = androidUrl;
+                window.location.href = androidUrl;
+                
+                // Fallback to Play Store if app isn't installed
+                setTimeout(() => {
+                    if (document.visibilityState === 'visible') {
+                        window.location.href = appStoreUrl;
+                    }
+                }, 2000);
+            } else {
+                // For desktop or other devices, open the app store
+                window.location.href = appStoreUrl;
             }
         }
 
