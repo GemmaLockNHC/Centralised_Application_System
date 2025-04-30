@@ -20,6 +20,11 @@ Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     Header set Cache-Control "max-age=31536000, public"
 </FilesMatch>
 
+# No cache for manifest
+<Files "manifest.json">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+</Files>
+
 # Prevent directory listing
 Options -Indexes
 
