@@ -9,7 +9,37 @@
   "icons": [
     {
       "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "72x72",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "96x96",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "128x128",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "144x144",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "152x152",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
       "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "/static/Neighbourhood_Care_Wiki_Logo.webp",
+      "sizes": "384x384",
       "type": "image/webp"
     },
     {
