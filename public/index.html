@@ -159,7 +159,7 @@
 
         <div class="icon-link">
             <a id="vworker-link" href="#" 
-               data-ios-url="vworker://" 
+               data-ios-url="https://apps.apple.com/au/app/vworker/id1219959010" 
                data-android-url="vds.mycareconnectv2://" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
@@ -185,10 +185,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="xero-me-link" href="#" 
-               data-ios-url="xerome://" 
-               data-android-url="com.xero.xerome://" 
-               data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
+            <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -203,7 +200,7 @@
 
         <div class="icon-link">
             <a id="vgo-link" href="#" 
-               data-ios-url="vgo://" 
+               data-ios-url="https://apps.apple.com/au/app/vgo/id1491287174" 
                data-android-url="com.visualcare.vgo://" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
@@ -223,18 +220,32 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const links = document.querySelectorAll('a[data-ios-url]');
+            const xeroMeLink = document.getElementById('xero-me-link');
+            const vWorkerLink = document.getElementById('vworker-link');
+            const vGoLink = document.getElementById('vgo-link');
+            const employmentHeroLink = document.getElementById('employment-hero-link');
 
-            links.forEach(link => {
-                if (deviceType.isIOS) {
-                    const appUrl = link.getAttribute('data-ios-url');
-                    const appStoreUrl = link.getAttribute('data-appstore-url');
-                    
-                    link.href = appUrl;
-                    
-                    // Add click handler for iOS to handle app store fallback
+            if (deviceType.isIOS) {
+                // iOS specific URLs
+                xeroMeLink.href = 'xerome://';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                employmentHeroLink.href = 'employmenthero://';
+            } else if (deviceType.isAndroid) {
+                // Android specific URLs
+                xeroMeLink.href = 'com.xero.xerome://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
+            }
+
+            // Add click handlers for iOS apps
+            if (deviceType.isIOS) {
+                [xeroMeLink, employmentHeroLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
+                        const appUrl = this.href;
+                        const appStoreUrl = this.getAttribute('data-appstore-url');
                         
                         // Try to open the app
                         window.location.href = appUrl;
@@ -246,10 +257,12 @@
                             }
                         }, 2000);
                     });
-                } else if (deviceType.isAndroid) {
-                    link.href = link.getAttribute('data-android-url');
-                }
-            });
+                });
+
+                // Set App Store fallback URLs
+                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
+                employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
+            }
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
