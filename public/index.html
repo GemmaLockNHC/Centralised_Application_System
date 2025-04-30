@@ -167,6 +167,7 @@
 
         <div class="icon-link">
             <a href="https://visualcare.com.au/vworker" 
+               data-app-url="vworker://"
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -182,6 +183,7 @@
 
         <div class="icon-link">
             <a href="https://employmenthero.com/products/hr-software/" 
+               data-app-url="employmenthero://"
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -190,6 +192,7 @@
 
         <div class="icon-link">
             <a href="https://www.xero.com/au/xero-me/" 
+               data-app-url="xero://"
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -205,6 +208,7 @@
 
         <div class="icon-link">
             <a href="https://visualcare.com.au/vgo" 
+               data-app-url="vgo://"
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -221,23 +225,12 @@
             return { isIOS, isSafari };
         }
 
-        function openApp(url, appStoreUrl) {
+        function openApp(url, appUrl, appStoreUrl) {
             const deviceType = detectDeviceType();
             
             if (deviceType.isIOS && deviceType.isSafari) {
-                // Create a hidden iframe
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = url;
-                document.body.appendChild(iframe);
-                
-                // Try to open the app
-                window.open(url, '_self');
-                
-                // Remove iframe after a short delay
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 100);
+                // Try to open the app using its URL scheme
+                window.location = appUrl;
                 
                 // If app isn't installed, redirect to App Store
                 setTimeout(() => {
@@ -246,7 +239,7 @@
                     }
                 }, 2000);
             } else {
-                // For non-iOS Safari, just use the URL directly
+                // For non-iOS Safari, use the web URL
                 window.location = url;
             }
         }
@@ -256,11 +249,12 @@
             
             links.forEach(link => {
                 const url = link.getAttribute('href');
+                const appUrl = link.getAttribute('data-app-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
                 
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    openApp(url, appStoreUrl);
+                    openApp(url, appUrl, appStoreUrl);
                 });
             });
         }
