@@ -214,18 +214,13 @@
             const links = document.querySelectorAll('a[data-app-url]');
 
             links.forEach(link => {
-                if (deviceType.isIOS) {
-                    link.href = link.getAttribute('data-app-url');
-                } else if (deviceType.isAndroid) {
-                    link.href = link.getAttribute('data-app-url');
-                }
+                const originalHref = link.getAttribute('href');
+                const appUrl = link.getAttribute('data-app-url');
+                const appStoreUrl = link.getAttribute('data-appstore-url');
 
-                // Add fallback for iOS apps
                 if (deviceType.isIOS) {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const appUrl = this.href;
-                        const appStoreUrl = this.getAttribute('data-appstore-url');
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
@@ -243,6 +238,11 @@
                             }
                         }, 100);
                     });
+                } else if (deviceType.isAndroid) {
+                    link.href = appUrl;
+                } else {
+                    // For desktop or other devices, keep the original web URL
+                    link.href = originalHref;
                 }
             });
         }
