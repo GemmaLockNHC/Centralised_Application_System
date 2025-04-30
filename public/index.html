@@ -5,8 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Centralised Application System</title>
     <link rel="icon" type="image/webp" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="96x96" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="128x128" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="192x192" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="384x384" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <link rel="apple-touch-icon" sizes="512x512" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+
     <style>
         html, body {
             margin: 0;
@@ -117,21 +144,21 @@
 <body>
     <div class="icon-container">
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/" target="_blank">
+            <a href="https://drive.google.com/drive/" target="_blank" data-app-url="googledrive://" data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>My Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/shared-drives" target="_blank">
+            <a href="https://drive.google.com/drive/shared-drives" target="_blank" data-app-url="googledrive://shared-drives" data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>Shared Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a id="vworker-link" href="https://visualcare.com.au/vworker" target="_blank">
+            <a href="https://visualcare.com.au/vworker" target="_blank" data-app-url="vds.mycareconnectv2://" data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
             </a>
@@ -145,14 +172,14 @@
         </div>
 
         <div class="icon-link">
-            <a id="employment-hero-link" href="https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE" target="_blank">
+            <a href="https://employmenthero.com/products/hr-software/" target="_blank" data-app-url="com.ehlife://" data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
+            <a href="https://www.xero.com/au/xero-me/" target="_blank" data-app-url="com.xero.xerome://" data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -166,7 +193,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
+            <a href="https://visualcare.com.au/vgo" target="_blank" data-app-url="com.visualcare.vgo://" data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
             </a>
@@ -184,42 +211,17 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const xeroMeLink = document.getElementById('xero-me-link');
-            const vGoLink = document.getElementById('vgo-link');
-            const vWorkerLink = document.getElementById('vworker-link');
-            const employmentHeroLink = document.getElementById('employment-hero-link');
-            const googleDriveLink = document.querySelector('a[href*="drive.google.com/drive/"]');
-            const sharedDriveLink = document.querySelector('a[href*="drive.google.com/drive/shared-drives"]');
+            const links = document.querySelectorAll('a[data-app-url]');
 
-            if (deviceType.isIOS) {
-                // iOS specific URLs
-                xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
-                employmentHeroLink.href = 'employmenthero://';
-                googleDriveLink.href = 'googledrive://';
-                sharedDriveLink.href = 'googledrive://shared-drives';
-            } else if (deviceType.isAndroid) {
-                // Android specific URLs
-                xeroMeLink.href = 'com.xero.xerome://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                vWorkerLink.href = 'vds.mycareconnectv2://';
-                employmentHeroLink.href = 'com.ehlife://';
-                googleDriveLink.href = 'com.google.android.apps.docs://';
-                sharedDriveLink.href = 'com.google.android.apps.docs://shared-drives';
-            } else {
-                // Desktop URLs remain unchanged
-                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
-                vGoLink.href = 'https://visualcare.com.au/vgo';
-                vWorkerLink.href = 'https://visualcare.com.au/vworker';
-                employmentHeroLink.href = 'https://employmenthero.com/products/hr-software/?utm_source=google&utm_medium=cpc&utm_campaign=22115700157&utm_content=171965123486&utm_term=employment%20hero%20payroll&gclsrc=aw.ds&gad_source=1&gclid=EAIaIQobChMIiZ7Yj_fEjAMVsR-DAx3sqQDCEAAYASAAEgLM8vD_BwE';
-                googleDriveLink.href = 'https://drive.google.com/drive/';
-                sharedDriveLink.href = 'https://drive.google.com/drive/shared-drives';
-            }
+            links.forEach(link => {
+                if (deviceType.isIOS) {
+                    link.href = link.getAttribute('data-app-url');
+                } else if (deviceType.isAndroid) {
+                    link.href = link.getAttribute('data-app-url');
+                }
 
-            // Add fallback for iOS apps
-            if (deviceType.isIOS) {
-                [xeroMeLink, vGoLink, vWorkerLink, employmentHeroLink, googleDriveLink, sharedDriveLink].forEach(link => {
+                // Add fallback for iOS apps
+                if (deviceType.isIOS) {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const appUrl = this.href;
@@ -232,10 +234,8 @@
                         
                         // Check if we should redirect to App Store
                         const checkRedirect = setInterval(() => {
-                            // If more than 2 seconds have passed and we haven't redirected yet
                             if (Date.now() - startTime > 2000 && !hasRedirected) {
                                 clearInterval(checkRedirect);
-                                // Only redirect if we're still on the page
                                 if (document.visibilityState === 'visible') {
                                     hasRedirected = true;
                                     window.location.href = appStoreUrl;
@@ -243,19 +243,11 @@
                             }
                         }, 100);
                     });
-                });
-
-                // Set App Store fallback URLs
-                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
-                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
-                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
-                employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
-                googleDriveLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-drive/id507874739');
-                sharedDriveLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-drive/id507874739');
-            }
+                }
+            });
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
     </script>
 </body>
-</html>
+</html> 
