@@ -225,45 +225,26 @@
             const vWorkerLink = document.getElementById('vworker-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs
-                xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'vgo://';
-                vWorkerLink.href = 'vworker://';
+                // iOS specific URLs - using Universal Links
+                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
+                vGoLink.href = 'https://visualcare.com.au/vgo';
+                vWorkerLink.href = 'https://visualcare.com.au/vworker';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
-                xeroMeLink.href = 'com.xero.xerome://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                vWorkerLink.href = 'vds.mycareconnectv2://';
+                xeroMeLink.href = 'intent://#Intent;scheme=com.xero.xerome;package=com.xero.touch;end';
+                vGoLink.href = 'intent://#Intent;scheme=com.visualcare.vgo;package=au.com.visualcare.vgo;end';
+                vWorkerLink.href = 'intent://#Intent;scheme=vds.mycareconnectv2;package=au.com.visualcare.vworker;end';
             }
 
-            // Add click handlers for both iOS and Android
-            [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const appUrl = this.href;
-                    const appStoreUrl = this.getAttribute('data-appstore-url');
-                    
-                    if (deviceType.isIOS) {
-                        // Try to open the app
-                        window.location.href = appUrl;
-                        
-                        // If app isn't installed, redirect to App Store after a short delay
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 2000);
-                    } else if (deviceType.isAndroid) {
-                        // For Android, just try to open the app
-                        window.location.href = appUrl;
-                    }
+            // Add click handlers for Android
+            if (deviceType.isAndroid) {
+                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = this.href;
+                    });
                 });
-            });
-
-            // Set App Store fallback URLs
-            xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
-            vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
-            vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
+            }
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
