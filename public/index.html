@@ -214,9 +214,8 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
-            const isChrome = /chrome/.test(userAgent);
             
-            return { isIOS, isAndroid, isChrome };
+            return { isIOS, isAndroid };
         }
 
         function setDeviceSpecificLinks() {
@@ -226,41 +225,46 @@
             const vWorkerLink = document.getElementById('vworker-link');
 
             if (deviceType.isIOS) {
-                // For iOS, use direct App Store links
-                const xeroStoreUrl = 'https://apps.apple.com/au/app/xero-me/id991901494';
-                const vGoStoreUrl = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                const vWorkerStoreUrl = 'https://apps.apple.com/au/app/vworker/id1219959010';
-
-                // Set initial hrefs to App Store
-                xeroMeLink.href = xeroStoreUrl;
-                vGoLink.href = vGoStoreUrl;
-                vWorkerLink.href = vWorkerStoreUrl;
-
-                // Add click handlers for iOS
-                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // For Chrome on iOS, we need to use window.open
-                        if (deviceType.isChrome) {
-                            window.open(this.href, '_blank');
-                        } else {
-                            window.location.href = this.href;
-                        }
-                    });
-                });
+                // iOS specific URLs - matching the working implementation
+                xeroMeLink.href = 'xerome://';
+                vGoLink.href = 'vgo://';
+                vWorkerLink.href = 'vworker://';
             } else if (deviceType.isAndroid) {
-                // For Android, use Play Store links
-                xeroMeLink.href = 'market://details?id=com.xero.touch';
-                vGoLink.href = 'market://details?id=au.com.visualcare.vgo';
-                vWorkerLink.href = 'market://details?id=au.com.visualcare.vworker';
+                // Android specific URLs - matching the working implementation
+                xeroMeLink.href = 'com.xero.xerome://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+            } else {
+                // Desktop URLs - matching the working implementation
+                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
+                vGoLink.href = 'https://visualcare.com.au/vgo';
+                vWorkerLink.href = 'https://visualcare.com.au/vworker';
+            }
 
-                // Add click handlers for Android
+            // Add click handlers for iOS
+            if (deviceType.isIOS) {
                 [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        window.location.href = this.href;
+                        const appUrl = this.href;
+                        const appStoreUrl = this.getAttribute('data-appstore-url');
+                        
+                        // Try to open the app
+                        window.location.href = appUrl;
+                        
+                        // If app isn't installed, redirect to App Store
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 2000);
                     });
                 });
+
+                // Set App Store fallback URLs
+                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
+                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
             }
         }
 
