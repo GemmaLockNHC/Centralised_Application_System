@@ -144,27 +144,24 @@
 <body>
     <div class="icon-container">
         <div class="icon-link">
-            <a href="#" 
-               data-ios-url="googledrive://" 
-               data-android-url="intent://drive.google.com/drive/#Intent;scheme=https;package=com.google.android.apps.docs;end" 
-               data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
+            <a href="googledrive://" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>My Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a href="#" 
-               data-ios-url="googledrive://shared-drives" 
-               data-android-url="intent://drive.google.com/drive/shared-drives#Intent;scheme=https;package=com.google.android.apps.docs;end" 
-               data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
+            <a href="googledrive://shared-drives" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>Shared Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a id="vworker-link" href="https://visualcare.com.au/vworker" target="_blank">
+            <a id="vworker-link" href="#" 
+               data-ios-url="vworker://" 
+               data-android-url="vds.mycareconnectv2://" 
+               data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
             </a>
@@ -188,7 +185,10 @@
         </div>
 
         <div class="icon-link">
-            <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
+            <a id="xero-me-link" href="#" 
+               data-ios-url="xerome://" 
+               data-android-url="com.xero.xerome://" 
+               data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -202,7 +202,10 @@
         </div>
 
         <div class="icon-link">
-            <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
+            <a id="vgo-link" href="#" 
+               data-ios-url="vgo://" 
+               data-android-url="com.visualcare.vgo://" 
+               data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
             </a>
@@ -220,52 +223,15 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const xeroMeLink = document.getElementById('xero-me-link');
-            const vGoLink = document.getElementById('vgo-link');
-            const vWorkerLink = document.getElementById('vworker-link');
+            const links = document.querySelectorAll('a[data-ios-url]');
 
-            if (deviceType.isIOS) {
-                // iOS specific URLs - matching the working implementation
-                xeroMeLink.href = 'xerome://';
-                vGoLink.href = 'vgo://';
-                vWorkerLink.href = 'vworker://';
-            } else if (deviceType.isAndroid) {
-                // Android specific URLs - matching the working implementation
-                xeroMeLink.href = 'com.xero.xerome://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                vWorkerLink.href = 'vds.mycareconnectv2://';
-            } else {
-                // Desktop URLs - matching the working implementation
-                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
-                vGoLink.href = 'https://visualcare.com.au/vgo';
-                vWorkerLink.href = 'https://visualcare.com.au/vworker';
-            }
-
-            // Add click handlers for iOS
-            if (deviceType.isIOS) {
-                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const appUrl = this.href;
-                        const appStoreUrl = this.getAttribute('data-appstore-url');
-                        
-                        // Try to open the app
-                        window.location.href = appUrl;
-                        
-                        // If app isn't installed, redirect to App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 2000);
-                    });
-                });
-
-                // Set App Store fallback URLs
-                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
-                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
-                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
-            }
+            links.forEach(link => {
+                if (deviceType.isIOS) {
+                    link.href = link.getAttribute('data-ios-url');
+                } else if (deviceType.isAndroid) {
+                    link.href = link.getAttribute('data-android-url');
+                }
+            });
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
