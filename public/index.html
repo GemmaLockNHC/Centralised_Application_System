@@ -225,15 +225,15 @@
             const vWorkerLink = document.getElementById('vworker-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs - using Universal Links
-                xeroMeLink.href = 'https://www.xero.com/au/xero-me/';
-                vGoLink.href = 'https://visualcare.com.au/vgo';
-                vWorkerLink.href = 'https://visualcare.com.au/vworker';
+                // iOS specific URLs - using direct App Store links
+                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
+                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
             } else if (deviceType.isAndroid) {
-                // Android specific URLs
-                xeroMeLink.href = 'intent://#Intent;scheme=com.xero.xerome;package=com.xero.touch;end';
-                vGoLink.href = 'intent://#Intent;scheme=com.visualcare.vgo;package=au.com.visualcare.vgo;end';
-                vWorkerLink.href = 'intent://#Intent;scheme=vds.mycareconnectv2;package=au.com.visualcare.vworker;end';
+                // Android specific URLs - using package names from Play Store
+                xeroMeLink.href = 'market://details?id=com.xero.touch';
+                vGoLink.href = 'market://details?id=au.com.visualcare.vgo';
+                vWorkerLink.href = 'market://details?id=au.com.visualcare.vworker';
             }
 
             // Add click handlers for Android
