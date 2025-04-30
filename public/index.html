@@ -215,32 +215,45 @@
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
             const isChrome = /crios|chrome/.test(userAgent);
+            const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
             
-            return { isIOS, isAndroid, isChrome };
+            return { isIOS, isAndroid, isChrome, isSafari };
         }
 
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS && deviceType.isChrome) {
-                // Create an iframe for the app URL
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = url;
-                document.body.appendChild(iframe);
+            if (deviceType.isIOS) {
+                // First try direct protocol
+                window.location.href = url;
                 
-                // Remove the iframe after a short delay
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 100);
-                
-                // Fallback to App Store after a delay
+                // If that doesn't work, try iframe approach
                 setTimeout(() => {
                     if (document.visibilityState === 'visible') {
-                        window.location.href = appStoreUrl;
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.src = url;
+                        document.body.appendChild(iframe);
+                        
+                        setTimeout(() => {
+                            document.body.removeChild(iframe);
+                            
+                            // If still visible, try universal link
+                            if (document.visibilityState === 'visible') {
+                                const universalLink = url.replace('://', '://app.');
+                                window.location.href = universalLink;
+                                
+                                // Final fallback to App Store
+                                setTimeout(() => {
+                                    if (document.visibilityState === 'visible') {
+                                        window.location.href = appStoreUrl;
+                                    }
+                                }, 1000);
+                            }
+                        }, 100);
                     }
-                }, 1000);
-            } else {
+                }, 100);
+            } else if (deviceType.isAndroid) {
                 window.location.href = url;
             }
         }
@@ -254,19 +267,10 @@
 
             if (deviceType.isIOS) {
                 // iOS specific URLs
-                if (deviceType.isChrome) {
-                    // For Chrome, use the direct protocol URLs
-                    xeroMeLink.href = 'xero-me://';
-                    vWorkerLink.href = 'vworker://';
-                    vGoLink.href = 'vgo://';
-                    employmentHeroLink.href = 'employmenthero://';
-                } else {
-                    // For Safari and other browsers
-                    xeroMeLink.href = 'xero-me://';
-                    vWorkerLink.href = 'vworker://';
-                    vGoLink.href = 'vgo://';
-                    employmentHeroLink.href = 'employmenthero://';
-                }
+                xeroMeLink.href = 'xero-me://';
+                vWorkerLink.href = 'vworker://';
+                vGoLink.href = 'vgo://';
+                employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
