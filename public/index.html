@@ -219,6 +219,32 @@
             return { isIOS, isAndroid, isChrome };
         }
 
+        function openApp(url, appStoreUrl) {
+            const deviceType = detectDeviceType();
+            
+            if (deviceType.isIOS && deviceType.isChrome) {
+                // Create an iframe for the app URL
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                
+                // Remove the iframe after a short delay
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 100);
+                
+                // Fallback to App Store after a delay
+                setTimeout(() => {
+                    if (document.visibilityState === 'visible') {
+                        window.location.href = appStoreUrl;
+                    }
+                }, 1000);
+            } else {
+                window.location.href = url;
+            }
+        }
+
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
             const xeroMeLink = document.getElementById('xero-me-link');
@@ -229,11 +255,11 @@
             if (deviceType.isIOS) {
                 // iOS specific URLs
                 if (deviceType.isChrome) {
-                    // For Chrome on iOS, we need to use a different approach
-                    xeroMeLink.href = 'https://xero.me';
-                    vWorkerLink.href = 'https://vworker.app';
-                    vGoLink.href = 'https://vgo.app';
-                    employmentHeroLink.href = 'https://employmenthero.com';
+                    // For Chrome, use the direct protocol URLs
+                    xeroMeLink.href = 'xero-me://';
+                    vWorkerLink.href = 'vworker://';
+                    vGoLink.href = 'vgo://';
+                    employmentHeroLink.href = 'employmenthero://';
                 } else {
                     // For Safari and other browsers
                     xeroMeLink.href = 'xero-me://';
@@ -256,21 +282,7 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
-                        
-                        if (deviceType.isChrome) {
-                            // For Chrome, try to open the app first
-                            window.location.href = appUrl;
-                            
-                            // If app isn't installed, redirect to App Store after a delay
-                            setTimeout(() => {
-                                if (document.visibilityState === 'visible') {
-                                    window.location.href = appStoreUrl;
-                                }
-                            }, 1000);
-                        } else {
-                            // For other browsers, use the direct protocol
-                            window.location.href = appUrl;
-                        }
+                        openApp(appUrl, appStoreUrl);
                     });
                 });
 
