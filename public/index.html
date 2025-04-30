@@ -144,21 +144,32 @@
 <body>
     <div class="icon-container">
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/" target="_blank" data-app-url="googledrive://" data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
+            <a href="https://drive.google.com/drive/" 
+               data-app-url="googledrive://" 
+               data-ios-url="googledrive://" 
+               data-android-url="intent://drive.google.com/drive/#Intent;scheme=https;package=com.google.android.apps.docs;end" 
+               data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>My Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a href="https://drive.google.com/drive/shared-drives" target="_blank" data-app-url="googledrive://shared-drives" data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
+            <a href="https://drive.google.com/drive/shared-drives" 
+               data-app-url="googledrive://shared-drives" 
+               data-ios-url="googledrive://shared-drives" 
+               data-android-url="intent://drive.google.com/drive/shared-drives#Intent;scheme=https;package=com.google.android.apps.docs;end" 
+               data-appstore-url="https://apps.apple.com/au/app/google-drive/id507874739">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
                 <p>Shared Drive</p>
             </a>
         </div>
 
         <div class="icon-link">
-            <a href="vds.mycareconnectv2://" 
+            <a href="https://visualcare.com.au/vworker" 
+               data-app-url="vds.mycareconnectv2://" 
+               data-ios-url="vds.mycareconnectv2://" 
+               data-android-url="intent://visualcare.com.au/vworker#Intent;scheme=https;package=au.com.visualcare.vworker;end" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -173,7 +184,10 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.ehlife://" 
+            <a href="https://employmenthero.com/products/hr-software/" 
+               data-app-url="com.ehlife://" 
+               data-ios-url="com.ehlife://" 
+               data-android-url="intent://employmenthero.com/products/hr-software/#Intent;scheme=https;package=com.ehlife;end" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -181,7 +195,10 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.xero.xerome://" 
+            <a href="https://www.xero.com/au/xero-me/" 
+               data-app-url="com.xero.xerome://" 
+               data-ios-url="com.xero.xerome://" 
+               data-android-url="intent://www.xero.com/au/xero-me/#Intent;scheme=https;package=com.xero.xerome;end" 
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -196,7 +213,10 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.visualcare.vgo://" 
+            <a href="https://visualcare.com.au/vgo" 
+               data-app-url="com.visualcare.vgo://" 
+               data-ios-url="com.visualcare.vgo://" 
+               data-android-url="intent://visualcare.com.au/vgo#Intent;scheme=https;package=com.visualcare.vgo;end" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -215,10 +235,13 @@
 
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
-            const links = document.querySelectorAll('a[data-appstore-url]');
+            const links = document.querySelectorAll('a[data-app-url]');
 
             links.forEach(link => {
-                const appUrl = link.getAttribute('href');
+                const originalHref = link.getAttribute('href');
+                const appUrl = link.getAttribute('data-app-url');
+                const iosUrl = link.getAttribute('data-ios-url');
+                const androidUrl = link.getAttribute('data-android-url');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
 
                 if (deviceType.isIOS) {
@@ -228,7 +251,7 @@
                         let hasRedirected = false;
                         
                         // Try to open the app
-                        window.location = appUrl;
+                        window.location = iosUrl;
                         
                         // Check if we should redirect to App Store
                         setTimeout(() => {
@@ -237,9 +260,21 @@
                             }
                         }, 1000);
                     });
+                } else if (deviceType.isAndroid) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Try to open the app
+                        window.location = androidUrl;
+                        // Fallback to web URL after a short delay
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                window.location = originalHref;
+                            }
+                        }, 1000);
+                    });
                 } else {
-                    // For Android, just use the app URL directly
-                    link.href = appUrl;
+                    // For desktop, keep the original web URL
+                    link.href = originalHref;
                 }
             });
         }
