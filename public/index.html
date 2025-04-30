@@ -164,7 +164,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="vworker-link" href="#">
+            <a id="vworker-link" href="https://visualcare.com.au/vworker" target="_blank">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
             </a>
@@ -188,7 +188,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="xero-me-link" href="#">
+            <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
             </a>
@@ -202,7 +202,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="vgo-link" href="#">
+            <a id="vgo-link" href="https://visualcare.com.au/vgo" target="_blank">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
             </a>
@@ -212,7 +212,7 @@
     <script>
         function detectDeviceType() {
             const userAgent = navigator.userAgent.toLowerCase();
-            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
             
             return { isIOS, isAndroid };
@@ -234,11 +234,6 @@
                 xeroMeLink.href = 'com.xero.xerome://';
                 vGoLink.href = 'com.visualcare.vgo://';
                 vWorkerLink.href = 'vds.mycareconnectv2://';
-            } else {
-                // Desktop URLs
-                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
             }
 
             // Add fallback for iOS apps
@@ -246,26 +241,33 @@
                 [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        document.body.appendChild(iframe);
+                        const appUrl = this.href;
+                        const appStoreUrl = this.getAttribute('data-appstore-url');
+                        const startTime = Date.now();
+                        let hasRedirected = false;
                         
                         // Try to open the app
-                        iframe.src = link.href;
+                        window.location.href = appUrl;
                         
-                        // If app isn't installed, redirect to App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = link.href.replace('://', '://apps.apple.com/au/app/');
+                        // Check if we should redirect to App Store
+                        const checkRedirect = setInterval(() => {
+                            // If more than 2 seconds have passed and we haven't redirected yet
+                            if (Date.now() - startTime > 2000 && !hasRedirected) {
+                                clearInterval(checkRedirect);
+                                // Only redirect if we're still on the page
+                                if (document.visibilityState === 'visible') {
+                                    hasRedirected = true;
+                                    window.location.href = appStoreUrl;
+                                }
                             }
-                        }, 2000);
-                        
-                        // Clean up the iframe
-                        setTimeout(() => {
-                            document.body.removeChild(iframe);
-                        }, 3000);
+                        }, 100);
                     });
                 });
+
+                // Set App Store fallback URLs
+                xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
+                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
             }
         }
 
