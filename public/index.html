@@ -175,7 +175,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="#" 
+            <a id="employment-hero-link" href="#" 
                data-ios-url="employmenthero://" 
                data-android-url="intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
@@ -228,8 +228,8 @@
             if (deviceType.isIOS) {
                 // iOS specific URLs
                 xeroMeLink.href = 'xerome://';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+                vGoLink.href = 'com.visualcare.vgo://';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
@@ -241,7 +241,7 @@
 
             // Add click handlers for iOS apps
             if (deviceType.isIOS) {
-                [xeroMeLink, employmentHeroLink].forEach(link => {
+                [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const appUrl = this.href;
@@ -255,12 +255,14 @@
                             if (document.visibilityState === 'visible') {
                                 window.location.href = appStoreUrl;
                             }
-                        }, 2000);
+                        }, 3000); // Increased timeout to 3 seconds
                     });
                 });
 
                 // Set App Store fallback URLs
                 xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
+                vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
                 employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
             }
         }
