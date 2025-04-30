@@ -215,40 +215,53 @@
     <script>
         function detectDeviceType() {
             const userAgent = navigator.userAgent.toLowerCase();
-            const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
-            const isAndroid = /android/.test(userAgent);
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
             
-            return { isIOS, isAndroid };
+            return { isIOS, isSafari };
+        }
+
+        function openApp(url, appStoreUrl) {
+            const deviceType = detectDeviceType();
+            
+            if (deviceType.isIOS && deviceType.isSafari) {
+                // Create a hidden iframe
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                
+                // Try to open the app
+                window.open(url, '_self');
+                
+                // Remove iframe after a short delay
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 100);
+                
+                // If app isn't installed, redirect to App Store
+                setTimeout(() => {
+                    if (document.visibilityState === 'visible') {
+                        window.location = appStoreUrl;
+                    }
+                }, 2000);
+            } else {
+                // For non-iOS Safari, just use the URL directly
+                window.location = url;
+            }
         }
 
         function setDeviceSpecificLinks() {
-            const deviceType = detectDeviceType();
             const links = document.querySelectorAll('a[data-appstore-url]');
-
+            
             links.forEach(link => {
-                const originalHref = link.getAttribute('href');
+                const url = link.getAttribute('href');
                 const appStoreUrl = link.getAttribute('data-appstore-url');
-
-                if (deviceType.isIOS) {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const startTime = Date.now();
-                        let hasRedirected = false;
-                        
-                        // Try to open the web URL (apps can intercept this)
-                        window.location = originalHref;
-                        
-                        // Check if we should redirect to App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location = appStoreUrl;
-                            }
-                        }, 1000);
-                    });
-                } else {
-                    // For Android and desktop, just use the original web URL
-                    link.href = originalHref;
-                }
+                
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openApp(url, appStoreUrl);
+                });
             });
         }
 
