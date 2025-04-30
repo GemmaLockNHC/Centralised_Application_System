@@ -158,7 +158,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="vds.mycareconnectv2://" target="_blank" 
+            <a href="vds.mycareconnectv2://" 
                data-appstore-url="https://apps.apple.com/au/app/vworker/id1219959010">
                 <img src="/static/vWorker_Logo.webp" alt="vWorker">
                 <p>vWorker</p>
@@ -173,7 +173,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.ehlife://" target="_blank" 
+            <a href="com.ehlife://" 
                data-appstore-url="https://apps.apple.com/au/app/employment-hero-work/id1171253572">
                 <img src="/static/Employment_Hero_Logo.webp" alt="Employment Hero">
                 <p>Employment Hero</p>
@@ -181,7 +181,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.xero.xerome://" target="_blank" 
+            <a href="com.xero.xerome://" 
                data-appstore-url="https://apps.apple.com/au/app/xero-me/id991901494">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
                 <p>Xero Me</p>
@@ -196,7 +196,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="com.visualcare.vgo://" target="_blank" 
+            <a href="com.visualcare.vgo://" 
                data-appstore-url="https://apps.apple.com/au/app/vgo/id1491287174">
                 <img src="/static/vGo_Logo.webp" alt="vGo">
                 <p>vGo</p>
@@ -227,24 +227,15 @@
                         const startTime = Date.now();
                         let hasRedirected = false;
                         
-                        // First try window.open
-                        window.open(appUrl, '_self');
-                        
-                        // Then try window.location
-                        setTimeout(() => {
-                            window.location.href = appUrl;
-                        }, 100);
+                        // Try to open the app
+                        window.location = appUrl;
                         
                         // Check if we should redirect to App Store
-                        const checkRedirect = setInterval(() => {
-                            if (Date.now() - startTime > 2000 && !hasRedirected) {
-                                clearInterval(checkRedirect);
-                                if (document.visibilityState === 'visible') {
-                                    hasRedirected = true;
-                                    window.location.href = appStoreUrl;
-                                }
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible') {
+                                window.location = appStoreUrl;
                             }
-                        }, 100);
+                        }, 1000);
                     });
                 } else {
                     // For Android, just use the app URL directly
