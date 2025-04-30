@@ -214,8 +214,9 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
+            const isChrome = /chrome/.test(userAgent);
             
-            return { isIOS, isAndroid };
+            return { isIOS, isAndroid, isChrome };
         }
 
         function setDeviceSpecificLinks() {
@@ -225,19 +226,35 @@
             const vWorkerLink = document.getElementById('vworker-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs - using direct App Store links
-                xeroMeLink.href = 'https://apps.apple.com/au/app/xero-me/id991901494';
-                vGoLink.href = 'https://apps.apple.com/au/app/vgo/id1491287174';
-                vWorkerLink.href = 'https://apps.apple.com/au/app/vworker/id1219959010';
+                // For iOS, use direct App Store links
+                const xeroStoreUrl = 'https://apps.apple.com/au/app/xero-me/id991901494';
+                const vGoStoreUrl = 'https://apps.apple.com/au/app/vgo/id1491287174';
+                const vWorkerStoreUrl = 'https://apps.apple.com/au/app/vworker/id1219959010';
+
+                // Set initial hrefs to App Store
+                xeroMeLink.href = xeroStoreUrl;
+                vGoLink.href = vGoStoreUrl;
+                vWorkerLink.href = vWorkerStoreUrl;
+
+                // Add click handlers for iOS
+                [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // For Chrome on iOS, we need to use window.open
+                        if (deviceType.isChrome) {
+                            window.open(this.href, '_blank');
+                        } else {
+                            window.location.href = this.href;
+                        }
+                    });
+                });
             } else if (deviceType.isAndroid) {
-                // Android specific URLs - using package names from Play Store
+                // For Android, use Play Store links
                 xeroMeLink.href = 'market://details?id=com.xero.touch';
                 vGoLink.href = 'market://details?id=au.com.visualcare.vgo';
                 vWorkerLink.href = 'market://details?id=au.com.visualcare.vworker';
-            }
 
-            // Add click handlers for Android
-            if (deviceType.isAndroid) {
+                // Add click handlers for Android
                 [xeroMeLink, vGoLink, vWorkerLink].forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
