@@ -146,6 +146,38 @@
                 font-size: 16px;
             }
         }
+
+        .web-link {
+            position: relative;
+        }
+
+        .web-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+        }
+
+        .web-link.loading::after {
+            display: flex;
+            content: 'Opening...';
+            font-size: 16px;
+            color: #027bc4;
+        }
+
+        .web-link:active::after {
+            display: flex;
+            content: 'Opening...';
+            font-size: 16px;
+            color: #027bc4;
+        }
     </style>
 </head>
 <body>
@@ -175,7 +207,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
+            <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank" class="web-link">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Wiki">
                 <p>Wiki</p>
             </a>
@@ -199,7 +231,7 @@
         </div>
 
         <div class="icon-link">
-            <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
+            <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank" class="web-link">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Employee Handbook">
                 <p>Employee Handbook</p>
             </a>
@@ -302,6 +334,26 @@
         }
 
         window.addEventListener('load', setDeviceSpecificLinks);
+
+        // Add click handlers for web links
+        document.querySelectorAll('.web-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Add loading state
+                this.classList.add('loading');
+                
+                // Create a smooth transition effect
+                this.style.opacity = '0.7';
+                
+                // Open in new window
+                const newWindow = window.open(this.href, '_blank');
+                
+                // Remove loading state after a delay
+                setTimeout(() => {
+                    this.classList.remove('loading');
+                    this.style.opacity = '1';
+                }, 1000);
+            });
+        });
     </script>
 </body>
 </html> 
