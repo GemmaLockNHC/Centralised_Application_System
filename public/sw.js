@@ -1,8 +1,8 @@
-const CACHE_NAME = 'cas-cache-v1';
+const CACHE_NAME = 'nhcare-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/static/Neighbourhood_Care_Wiki_Logo.webp',
+  '/Neighbourhood_Care_Wiki_Logo.webp',
   '/manifest.json'
 ];
 
