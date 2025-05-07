@@ -1,11 +1,13 @@
 {
-  "name": "NHCare",
+  "name": "NHCare - Neighbourhood Care",
   "short_name": "NHCare",
   "description": "NHCare - Neighbourhood Care Application Hub",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/",
   "icons": [
     {
       "src": "/Neighbourhood_Care_Wiki_Logo.webp",
