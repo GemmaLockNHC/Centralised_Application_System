@@ -1,7 +1,7 @@
 {
-  "name": "centralised-application-system",
+  "name": "nhcare",
   "version": "1.0.0",
-  "description": "Centralised Application System for Neighbourhood Care",
+  "description": "NHCare - Neighbourhood Care Application Hub",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
