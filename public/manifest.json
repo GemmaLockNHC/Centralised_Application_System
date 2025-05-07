@@ -1,7 +1,7 @@
 {
-  "name": "Centralised Application System",
+  "name": "NHCare",
   "short_name": "NHCare",
-  "description": "Neighbourhood Care Centralised Application System",
+  "description": "NHCare - Neighbourhood Care Application Hub",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
