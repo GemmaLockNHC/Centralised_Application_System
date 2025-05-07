@@ -233,11 +233,17 @@
                 // For iOS, use a more reliable method that works from home screen
                 const timestamp = Date.now();
                 
-                // First try to open the app
-                window.location.href = url;
+                // Create an iframe to handle the URL scheme
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
                 
-                // If that doesn't work, try the App Store
+                // Remove the iframe after a short delay
                 setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    
+                    // If we're still visible after the delay, try the App Store
                     if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
                     }
@@ -255,11 +261,11 @@
             const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs
+                // iOS specific URLs with proper URL scheme format
                 xeroMeLink.href = 'xerome://';
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
-                employmentHeroLink.href = 'https://app.employmenthero.com';
+                employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
