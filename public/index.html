@@ -175,7 +175,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="wiki-link" href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
+            <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Wiki">
                 <p>Wiki</p>
             </a>
@@ -199,7 +199,7 @@
         </div>
 
         <div class="icon-link">
-            <a id="handbook-link" href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
+            <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Employee Handbook">
                 <p>Employee Handbook</p>
             </a>
@@ -259,8 +259,6 @@
             const vWorkerLink = document.getElementById('vworker-link');
             const vGoLink = document.getElementById('vgo-link');
             const employmentHeroLink = document.getElementById('employment-hero-link');
-            const wikiLink = document.getElementById('wiki-link');
-            const handbookLink = document.getElementById('handbook-link');
 
             if (deviceType.isIOS) {
                 // iOS specific URLs with proper URL scheme format
@@ -268,22 +266,16 @@
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
-                // Use Google Sites app URL scheme for iOS
-                wikiLink.href = 'googlesites://sites.google.com/nhcare.com.au/wiki';
-                handbookLink.href = 'googlesites://sites.google.com/nhcare.com.au/wiki/directory';
             } else if (deviceType.isAndroid) {
                 // Android specific URLs
                 xeroMeLink.href = 'com.xero.xerome://';
                 vWorkerLink.href = 'vds.mycareconnectv2://';
                 vGoLink.href = 'com.visualcare.vgo://';
                 employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
-                // Keep web URLs for Android as Google Sites app URL scheme isn't widely supported
-                wikiLink.href = 'https://sites.google.com/nhcare.com.au/wiki';
-                handbookLink.href = 'https://sites.google.com/nhcare.com.au/wiki/directory';
             }
 
             // Add click handlers for all app links
-            [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink, wikiLink, handbookLink].forEach(link => {
+            [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink].forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const appUrl = this.href;
@@ -306,8 +298,6 @@
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
                 vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
                 employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
-                wikiLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-sites/id679829976');
-                handbookLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/google-sites/id679829976');
             }
         }
 
