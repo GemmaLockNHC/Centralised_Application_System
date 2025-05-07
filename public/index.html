@@ -229,19 +229,32 @@
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS) {
-                // For iOS, use a more reliable method
-                const startTime = Date.now();
-                
-                // Store the current timestamp
+            if (deviceType.isIOS && deviceType.isChrome) {
+                // For Chrome on iOS, use a more reliable method
                 const timestamp = Date.now();
                 
-                // Try to open the app
+                // First try window.open
+                const newWindow = window.open(url, '_self');
+                
+                // If that doesn't work, try direct protocol
+                setTimeout(() => {
+                    if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
+                        window.location.href = url;
+                        
+                        // If still visible after another delay, try App Store
+                        setTimeout(() => {
+                            if (document.visibilityState === 'visible' && Date.now() - timestamp > 2000) {
+                                window.location.href = appStoreUrl;
+                            }
+                        }, 1000);
+                    }
+                }, 1000);
+            } else if (deviceType.isIOS) {
+                // For Safari and other browsers
+                const timestamp = Date.now();
                 window.location.href = url;
                 
-                // Check if we're still on the page after a longer delay
                 setTimeout(() => {
-                    // Only redirect if we're still on the page AND enough time has passed
                     if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
                     }
