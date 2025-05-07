@@ -229,29 +229,17 @@
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS && deviceType.isChrome) {
-                // For Chrome on iOS, use a specific sequence
+            if (deviceType.isIOS) {
+                // For iOS, use a more reliable method
                 const startTime = Date.now();
+                window.location.href = url;
                 
-                // First try window.open
-                const newWindow = window.open(url, '_self');
-                
-                // If that doesn't work, try direct protocol
+                // If the app doesn't open within 500ms, redirect to App Store
                 setTimeout(() => {
                     if (document.visibilityState === 'visible') {
-                        window.location.href = url;
-                        
-                        // If still visible, try App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 100);
+                        window.location.href = appStoreUrl;
                     }
-                }, 100);
-            } else if (deviceType.isIOS) {
-                // For Safari and other browsers
-                window.location.href = url;
+                }, 500);
             } else if (deviceType.isAndroid) {
                 window.location.href = url;
             }
@@ -265,7 +253,7 @@
             const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs - using multiple approaches
+                // iOS specific URLs
                 xeroMeLink.href = 'xerome://';
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
@@ -285,7 +273,6 @@
                         e.preventDefault();
                         const appUrl = this.href;
                         const appStoreUrl = this.getAttribute('data-appstore-url');
-                        const appName = this.querySelector('p').textContent;
                         
                         // Create a smooth transition effect
                         this.style.opacity = '0.7';
@@ -294,47 +281,13 @@
                         }, 200);
 
                         // Try to open the app
-                        window.location.href = appUrl;
-                        
-                        // If that doesn't work, show a message and redirect to App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible') {
-                                // Create a temporary message
-                                const message = document.createElement('div');
-                                message.style.cssText = `
-                                    position: fixed;
-                                    top: 50%;
-                                    left: 50%;
-                                    transform: translate(-50%, -50%);
-                                    background: rgba(0, 0, 0, 0.8);
-                                    color: white;
-                                    padding: 20px;
-                                    border-radius: 10px;
-                                    text-align: center;
-                                    z-index: 1000;
-                                    font-size: 16px;
-                                    max-width: 80%;
-                                `;
-                                message.innerHTML = `
-                                    <p>Opening ${appName}...</p>
-                                    <p style="font-size: 14px; opacity: 0.8;">If the app doesn't open, you'll be redirected to the App Store</p>
-                                `;
-                                document.body.appendChild(message);
-                                
-                                // Remove message and redirect after a short delay
-                                setTimeout(() => {
-                                    document.body.removeChild(message);
-                                    window.location.href = appStoreUrl;
-                                }, 1500);
-                            }
-                        }, 1000);
+                        openApp(appUrl, appStoreUrl);
                     });
                 });
 
                 // Special handling for Employment Hero
                 employmentHeroLink.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const appName = this.querySelector('p').textContent;
                     
                     // Create a smooth transition effect
                     this.style.opacity = '0.7';
@@ -350,7 +303,7 @@
                         if (document.visibilityState === 'visible') {
                             window.location.href = 'https://app.employmenthero.com';
                         }
-                    }, 1000);
+                    }, 500);
                 });
 
                 // Set App Store fallback URLs
