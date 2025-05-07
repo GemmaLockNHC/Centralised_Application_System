@@ -229,36 +229,19 @@
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
-            if (deviceType.isIOS && deviceType.isChrome) {
-                // For Chrome on iOS, use a more reliable method
+            if (deviceType.isIOS) {
+                // For iOS, use a more reliable method that works from home screen
                 const timestamp = Date.now();
                 
-                // First try window.open
-                const newWindow = window.open(url, '_self');
-                
-                // If that doesn't work, try direct protocol
-                setTimeout(() => {
-                    if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
-                        window.location.href = url;
-                        
-                        // If still visible after another delay, try App Store
-                        setTimeout(() => {
-                            if (document.visibilityState === 'visible' && Date.now() - timestamp > 2000) {
-                                window.location.href = appStoreUrl;
-                            }
-                        }, 1000);
-                    }
-                }, 1000);
-            } else if (deviceType.isIOS) {
-                // For Safari and other browsers
-                const timestamp = Date.now();
+                // First try to open the app
                 window.location.href = url;
                 
+                // If that doesn't work, try the App Store
                 setTimeout(() => {
                     if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
                     }
-                }, 1500);
+                }, 1000);
             } else if (deviceType.isAndroid) {
                 window.location.href = url;
             }
@@ -285,28 +268,12 @@
                 employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
             }
 
-            // Add click handlers for iOS apps
-            if (deviceType.isIOS) {
-                [xeroMeLink, vWorkerLink, vGoLink].forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const appUrl = this.href;
-                        const appStoreUrl = this.getAttribute('data-appstore-url');
-                        
-                        // Create a smooth transition effect
-                        this.style.opacity = '0.7';
-                        setTimeout(() => {
-                            this.style.opacity = '1';
-                        }, 200);
-
-                        // Try to open the app
-                        openApp(appUrl, appStoreUrl);
-                    });
-                });
-
-                // Special handling for Employment Hero
-                employmentHeroLink.addEventListener('click', function(e) {
+            // Add click handlers for all app links
+            [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink].forEach(link => {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    const appUrl = this.href;
+                    const appStoreUrl = this.getAttribute('data-appstore-url');
                     
                     // Create a smooth transition effect
                     this.style.opacity = '0.7';
@@ -314,21 +281,17 @@
                         this.style.opacity = '1';
                     }, 200);
 
-                    // Try to open the app directly
-                    window.location.href = 'employmenthero://';
-                    
-                    // If that doesn't work, try the web version
-                    setTimeout(() => {
-                        if (document.visibilityState === 'visible') {
-                            window.location.href = 'https://app.employmenthero.com';
-                        }
-                    }, 1500);
+                    // Try to open the app
+                    openApp(appUrl, appStoreUrl);
                 });
+            });
 
-                // Set App Store fallback URLs
+            // Set App Store fallback URLs for iOS
+            if (deviceType.isIOS) {
                 xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
                 vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
+                employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
             }
         }
 
