@@ -262,20 +262,14 @@
             const deviceType = detectDeviceType();
             
             if (deviceType.isIOS) {
-                // For iOS, use a more reliable method that works from home screen
+                // For iOS, use direct URL scheme first
                 const timestamp = Date.now();
                 
-                // Create an iframe to handle the URL scheme
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = url;
-                document.body.appendChild(iframe);
+                // First try to open the app directly
+                window.location.href = url;
                 
-                // Remove the iframe after a short delay
+                // If that doesn't work, try the App Store
                 setTimeout(() => {
-                    document.body.removeChild(iframe);
-                    
-                    // If we're still visible after the delay, try the App Store
                     if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
                     }
