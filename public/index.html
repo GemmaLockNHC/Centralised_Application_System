@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for the Progressive Web App (PWA), as well as for mobile optimization: -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NHCare - Neighbourhood Care</title>
+    
+    <!-- Configuration for the Progressive Web App (PWA), as well as for mobile applications: -->
     <meta name="application-name" content="NHCare">
     <meta name="apple-mobile-web-app-title" content="NHCare">
     <meta name="mobile-web-app-capable" content="yes">
@@ -14,9 +17,12 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="theme-color" content="#ffffff">
+
+    <!-- Provides the Favicon, as well as application icons for an array of devices. -->
     <link rel="icon" type="image/webp" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    <!-- Provides multiple sizes for associated icons of all of the applications for several devices, as well as contexts. -->
     <link rel="apple-touch-icon" sizes="72x72" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link rel="apple-touch-icon" sizes="96x96" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link rel="apple-touch-icon" sizes="128x128" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
@@ -25,8 +31,11 @@
     <link rel="apple-touch-icon" sizes="192x192" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link rel="apple-touch-icon" sizes="384x384" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
     <link rel="apple-touch-icon" sizes="512x512" href="/static/Neighbourhood_Care_Wiki_Logo.webp">
+    
+    <!-- Provides the font (from 'Google Fonts') that is used by the application. -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Service Worker registration code: -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -42,6 +51,7 @@
     </script>
 
     <style>
+        /* Provides the base styles for the full viewport coverage of the application. */
         html, body {
             margin: 0;
             padding: 0;
@@ -49,6 +59,7 @@
             overflow: hidden;
         }
 
+        /* Provides the main body styling of the application, with safe area insets for relatively modern devices. */
         body {
             background-color: #ffffff;
             color: #333333;
@@ -67,6 +78,7 @@
             left: 0;
         }
 
+        /* Provides the grid container for its applications' icons. */
         .icon-container {
             display: grid;
             grid-template-columns: repeat(3, 220px);
@@ -77,6 +89,7 @@
             padding: 0;
         }
 
+        /* Provides the link styling for the associated icons of all of its applications. */
         .icon-link {
             display: flex;
             flex-direction: column;
@@ -85,6 +98,7 @@
             height: 220px;
         }
 
+        /* Provides the image styling for the associated icons of all of its applications. */
         img {
             width: 140px;
             height: 140px;
@@ -95,16 +109,19 @@
             margin-bottom: 6px;
         }
 
+        /* Provides touch feedback for the associated icons of all of its applications. */
         .icon-link:active img {
             filter: brightness(0.7);
         }
 
+        /* Provides a hover effect (only for devices with the ability to provide that). */
         @media (hover: hover) {
             .icon-link:hover img {
                 filter: brightness(0.7);
             }
         }
 
+        /* Provides the text styling for the associated names of all of its applications. */
         p {
             margin: 0;
             font-size: 20px;
@@ -116,17 +133,20 @@
             color: #027bc4;
         }
         
+        /* Provides link styling. */
         a {
             text-decoration: none;
             color: #027bc4;
         }
 
+        /* Provides responsive design for tablet devices. */
         @media screen and (max-width: 750px) {
             .icon-container {
                 grid-template-columns: repeat(2, 220px);
             }
         }
 
+        /* Provides responsive design for mobile phone devices. */
         @media screen and (max-width: 500px) {
             .icon-container {
                 grid-template-columns: repeat(2, 160px);
@@ -181,7 +201,9 @@
     </style>
 </head>
 <body>
+    <!-- Provides a grid of associated hyperlinks for its application. -->
     <div class="icon-container">
+        <!-- 'Google Drive' hyperlink: -->
         <div class="icon-link">
             <a href="googledrive://" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
@@ -189,6 +211,7 @@
             </a>
         </div>
 
+        <!-- 'Shared Drive' hyperlink: -->
         <div class="icon-link">
             <a href="googledrive://shared-drives" target="_blank">
                 <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_512dp.png" alt="Google Drive">
@@ -196,6 +219,7 @@
             </a>
         </div>
 
+        <!-- 'vWorker' hyperlink: -->
         <div class="icon-link">
             <a id="vworker-link" href="#" 
                data-ios-url="https://apps.apple.com/au/app/vworker/id1219959010" 
@@ -206,6 +230,7 @@
             </a>
         </div>
 
+        <!-- 'Wiki' hyperlink: -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Wiki">
@@ -213,6 +238,7 @@
             </a>
         </div>
 
+        <!-- 'Employment Hero' hyperlink: -->
         <div class="icon-link">
             <a id="employment-hero-link" href="#" 
                data-ios-url="employmenthero://" 
@@ -223,6 +249,7 @@
             </a>
         </div>
 
+        <!-- 'Xero Me' hyperlink: -->
         <div class="icon-link">
             <a id="xero-me-link" href="https://www.xero.com/au/xero-me/" target="_blank">
                 <img src="/static/Xero_Logo.svg" alt="Xero Me">
@@ -230,6 +257,7 @@
             </a>
         </div>
 
+        <!-- 'Employee Handbook' hyperlink: -->
         <div class="icon-link">
             <a href="https://sites.google.com/nhcare.com.au/wiki/directory" target="_blank">
                 <img src="/static/Neighbourhood_Care_Wiki_Logo.webp" alt="Employee Handbook">
@@ -237,6 +265,7 @@
             </a>
         </div>
 
+        <!-- 'vGo' hyperlink: -->
         <div class="icon-link">
             <a id="vgo-link" href="#" 
                data-ios-url="https://apps.apple.com/au/app/vgo/id1491287174" 
@@ -249,6 +278,10 @@
     </div>
 
     <script>
+        /**
+         * Detects the device type and browser that is used by its users.
+         * @returns {Object} Object, that contains device type flags.
+         */
         function detectDeviceType() {
             const userAgent = navigator.userAgent.toLowerCase();
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
@@ -258,17 +291,22 @@
             return { isIOS, isAndroid, isChrome };
         }
 
+        /**
+         * Attempts to open a native application, otherwise directs its users to its associated App Store page.
+         * @param {string} url, which is the URL scheme that opens a particular application.
+         * @param {string} appStoreUrl, which is the associated App store page for a particular application. 
+         */
         function openApp(url, appStoreUrl) {
             const deviceType = detectDeviceType();
             
             if (deviceType.isIOS) {
-                // For iOS, use direct URL scheme first
+                // For iOS devices, it initially uses the direct URL scheme of a particular application.
                 const timestamp = Date.now();
                 
-                // First try to open the app directly
+                // Initially attempts to open a particular application directly.
                 window.location.href = url;
                 
-                // If that doesn't work, try the App Store
+                // If that previous attempt is not successful, it attempts to direct its users to the associated App Store page of a particular application.
                 setTimeout(() => {
                     if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
@@ -279,6 +317,9 @@
             }
         }
 
+        /**
+         * Sets up platform-specific URLs, and click handlers for the hyperlinks of its applications.
+         */
         function setDeviceSpecificLinks() {
             const deviceType = detectDeviceType();
             const xeroMeLink = document.getElementById('xero-me-link');
@@ -287,38 +328,38 @@
             const employmentHeroLink = document.getElementById('employment-hero-link');
 
             if (deviceType.isIOS) {
-                // iOS specific URLs with proper URL scheme format
+                // iOS platform-specific URLs:
                 xeroMeLink.href = 'xerome://';
                 vWorkerLink.href = 'vworker://';
                 vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
-                // Android specific URLs
+                // Android platform-specific URLs:
                 xeroMeLink.href = 'com.xero.xerome://';
                 vWorkerLink.href = 'vds.mycareconnectv2://';
                 vGoLink.href = 'com.visualcare.vgo://';
                 employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
             }
 
-            // Add click handlers for all app links
+            // Adds click handlers for the associated hyperlinks for all of its applications.
             [xeroMeLink, vWorkerLink, vGoLink, employmentHeroLink].forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const appUrl = this.href;
                     const appStoreUrl = this.getAttribute('data-appstore-url');
                     
-                    // Create a smooth transition effect
+                    // Creates a smooth transition effect between the application and the associated hyperlinks of its applications.
                     this.style.opacity = '0.7';
                     setTimeout(() => {
                         this.style.opacity = '1';
                     }, 200);
 
-                    // Try to open the app
+                    // Attempts to open its applications.
                     openApp(appUrl, appStoreUrl);
                 });
             });
 
-            // Set App Store fallback URLs for iOS
+            // Sets fallback URLs for its applications for its users who are using iOS devices.
             if (deviceType.isIOS) {
                 xeroMeLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/xero-me/id991901494');
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
@@ -327,21 +368,22 @@
             }
         }
 
+        // Initializes device-specific associated hyperlinks for its applications.
         window.addEventListener('load', setDeviceSpecificLinks);
 
-        // Add click handlers for web links
+        // Adds click handlers for the associated hyperlinks for its applications.
         document.querySelectorAll('.web-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                // Add loading state
+                // Adds loading states.
                 this.classList.add('loading');
                 
-                // Create a smooth transition effect
+                // Creates smooth transition effects between the associated hyperlinks for its applications.
                 this.style.opacity = '0.7';
                 
-                // Open in new window
+                // Opens its applications in new window.
                 const newWindow = window.open(this.href, '_blank');
                 
-                // Remove loading state after a delay
+                // Removes its loading states delays.
                 setTimeout(() => {
                     this.classList.remove('loading');
                     this.style.opacity = '1';
