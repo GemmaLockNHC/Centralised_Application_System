@@ -1,6 +1,6 @@
 {
   "name": "Centralised Application System",
-  "short_name": "Centralised Application System",
+  "short_name": "NHCare",
   "description": "Neighbourhood Care Centralised Application System",
   "start_url": "/",
   "display": "standalone",
