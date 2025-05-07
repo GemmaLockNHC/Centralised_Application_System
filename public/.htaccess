@@ -1,52 +1,52 @@
 RewriteEngine On
 DirectoryIndex index.html
 
-# Enable rewrite engine
+# Enables the rewrite engine.
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Redirect root to index.html
+# Redirects root to 'index.html'.
 RewriteRule ^$ index.html [L]
 
-# Security Headers
+# Security headers:
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
 Header set X-XSS-Protection "1; mode=block"
 Header set Referrer-Policy "strict-origin-when-cross-origin"
 Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 
-# Cache Control
+# Cache control:
 <FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|ico|webp|svg)$">
     Header set Cache-Control "max-age=31536000, public"
 </FilesMatch>
 
-# No cache for manifest
+# Ensures that there is no cache for manifest.
 <Files "manifest.json">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
 </Files>
 
-# Prevent directory listing
+# Prevents directory listing.
 Options -Indexes
 
-# Prevent access to .htaccess
+# Prevent access to '.htaccess'.
 <Files .htaccess>
     Order allow,deny
     Deny from all
 </Files>
 
-# Prevent access to hidden files
+# Prevents access to hidden files.
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Allow access to .well-known directory
+# Allows access to '.well-known directory'.
 <DirectoryMatch "^\.well-known">
     Order allow,deny
     Allow from all
 </DirectoryMatch>
 
-# Set correct content type for apple-app-site-association
+# Sets the correct content type for 'apple-app-site-association'.
 <Files "apple-app-site-association">
     Header set Content-Type "application/json"
 </Files> 
