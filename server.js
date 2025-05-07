@@ -6,7 +6,13 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('manifest.json')) {
+      res.setHeader('Content-Type', 'application/manifest+json');
+    }
+  }
+}));
 
 // Serve index.html at root
 app.get('/', (req, res) => {
