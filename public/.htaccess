@@ -5,7 +5,7 @@ DirectoryIndex index.html
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Redirects root to 'index.html'.
+# Redirects root to the file named 'index.html'.
 RewriteRule ^$ index.html [L]
 
 # Security headers:
@@ -20,27 +20,28 @@ Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     Header set Cache-Control "max-age=31536000, public"
 </FilesMatch>
 
-# Ensures that there is no cache for manifest.
+# Ensures that there is no cache for the file 'manifest.json'.
 <Files "manifest.json">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Content-Type "application/manifest+json"
 </Files>
 
 # Prevents directory listing.
 Options -Indexes
 
-# Prevent access to '.htaccess'.
+# Prevents access to the file named '.htaccess'.
 <Files .htaccess>
     Order allow,deny
     Deny from all
 </Files>
 
-# Prevents access to hidden files.
+# Prevent access to hidden files.
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Allows access to '.well-known directory'.
+# Allow access to the directory named '.well-known'.
 <DirectoryMatch "^\.well-known">
     Order allow,deny
     Allow from all
