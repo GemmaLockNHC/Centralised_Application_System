@@ -232,14 +232,20 @@
             if (deviceType.isIOS) {
                 // For iOS, use a more reliable method
                 const startTime = Date.now();
+                
+                // Store the current timestamp
+                const timestamp = Date.now();
+                
+                // Try to open the app
                 window.location.href = url;
                 
-                // If the app doesn't open within 500ms, redirect to App Store
+                // Check if we're still on the page after a longer delay
                 setTimeout(() => {
-                    if (document.visibilityState === 'visible') {
+                    // Only redirect if we're still on the page AND enough time has passed
+                    if (document.visibilityState === 'visible' && Date.now() - timestamp > 1000) {
                         window.location.href = appStoreUrl;
                     }
-                }, 500);
+                }, 1500);
             } else if (deviceType.isAndroid) {
                 window.location.href = url;
             }
@@ -303,7 +309,7 @@
                         if (document.visibilityState === 'visible') {
                             window.location.href = 'https://app.employmenthero.com';
                         }
-                    }, 500);
+                    }, 1500);
                 });
 
                 // Set App Store fallback URLs
