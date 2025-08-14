@@ -383,20 +383,11 @@
                 vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
-                // Android platform-specific URLs with Samsung considerations:
-                if (deviceType.isSamsung) {
-                    // Samsung-specific URL schemes (more conservative)
-                    xeroMeLink.href = 'https://play.google.com/store/apps/details?id=com.xero.xerome';
-                    vWorkerLink.href = 'vds.mycareconnectv2://';
-                    vGoLink.href = 'com.visualcare.vgo://';
-                    employmentHeroLink.href = 'https://play.google.com/store/apps/details?id=com.employmenthero.app';
-                } else {
-                    // Standard Android URL schemes
-                    xeroMeLink.href = 'com.xero.xerome://';
-                    vWorkerLink.href = 'vds.mycareconnectv2://';
-                    vGoLink.href = 'com.visualcare.vgo://';
-                    employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
-                }
+                // Android platform-specific URLs:
+                xeroMeLink.href = 'com.xero.xerome://';
+                vWorkerLink.href = 'vds.mycareconnectv2://';
+                vGoLink.href = 'com.visualcare.vgo://';
+                employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
             }
 
             // Adds click handlers for the associated hyperlinks for all of its applications.
