@@ -39,14 +39,41 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful');
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
+                // Add timeout for Samsung devices
+                const swRegistration = navigator.serviceWorker.register('/sw.js', {
+                    scope: '/'
+                });
+                
+                swRegistration.then(registration => {
+                    console.log('ServiceWorker registration successful');
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('New service worker installed');
+                            }
+                        });
                     });
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                    
+                    // For Samsung devices, try alternative approach
+                    const deviceType = detectDeviceType();
+                    if (deviceType.isSamsung) {
+                        console.log('Attempting alternative service worker registration for Samsung device');
+                        // Retry with different scope
+                        navigator.serviceWorker.register('/sw.js', {
+                            scope: '/'
+                        }).catch(retryErr => {
+                            console.log('Alternative ServiceWorker registration also failed: ', retryErr);
+                        });
+                    }
+                });
             });
+        } else {
+            console.log('Service Worker not supported');
         }
     </script>
 
@@ -287,8 +314,10 @@
             const isIOS = /iphone|ipad|ipod|macintosh|mac os x/.test(userAgent);
             const isAndroid = /android/.test(userAgent);
             const isChrome = /crios|chrome/.test(userAgent);
+            const isSamsung = /samsungbrowser|samsung/.test(userAgent);
+            const isSamsungInternet = /samsungbrowser/.test(userAgent);
             
-            return { isIOS, isAndroid, isChrome };
+            return { isIOS, isAndroid, isChrome, isSamsung, isSamsungInternet };
         }
 
         /**
@@ -313,7 +342,27 @@
                     }
                 }, 1000);
             } else if (deviceType.isAndroid) {
-                window.location.href = url;
+                // Enhanced Android handling for Samsung devices
+                if (deviceType.isSamsung) {
+                    // Try multiple approaches for Samsung devices
+                    const fallbackTimeout = setTimeout(() => {
+                        // If direct scheme fails, try Play Store
+                        if (document.visibilityState === 'visible') {
+                            window.location.href = appStoreUrl || 'https://play.google.com/store';
+                        }
+                    }, 1500);
+                    
+                    // Try direct scheme first
+                    window.location.href = url;
+                    
+                    // Clear timeout if app opens successfully
+                    setTimeout(() => {
+                        clearTimeout(fallbackTimeout);
+                    }, 1000);
+                } else {
+                    // Standard Android handling
+                    window.location.href = url;
+                }
             }
         }
 
@@ -334,11 +383,20 @@
                 vGoLink.href = 'vgo://';
                 employmentHeroLink.href = 'employmenthero://';
             } else if (deviceType.isAndroid) {
-                // Android platform-specific URLs:
-                xeroMeLink.href = 'com.xero.xerome://';
-                vWorkerLink.href = 'vds.mycareconnectv2://';
-                vGoLink.href = 'com.visualcare.vgo://';
-                employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
+                // Android platform-specific URLs with Samsung considerations:
+                if (deviceType.isSamsung) {
+                    // Samsung-specific URL schemes (more conservative)
+                    xeroMeLink.href = 'https://play.google.com/store/apps/details?id=com.xero.xerome';
+                    vWorkerLink.href = 'vds.mycareconnectv2://';
+                    vGoLink.href = 'com.visualcare.vgo://';
+                    employmentHeroLink.href = 'https://play.google.com/store/apps/details?id=com.employmenthero.app';
+                } else {
+                    // Standard Android URL schemes
+                    xeroMeLink.href = 'com.xero.xerome://';
+                    vWorkerLink.href = 'vds.mycareconnectv2://';
+                    vGoLink.href = 'com.visualcare.vgo://';
+                    employmentHeroLink.href = 'intent://#Intent;scheme=employmenthero;package=com.employmenthero.app;end';
+                }
             }
 
             // Adds click handlers for the associated hyperlinks for all of its applications.
@@ -365,11 +423,30 @@
                 vWorkerLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vworker/id1219959010');
                 vGoLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/vgo/id1491287174');
                 employmentHeroLink.setAttribute('data-appstore-url', 'https://apps.apple.com/au/app/employment-hero-work/id1171253572');
+            } else if (deviceType.isAndroid) {
+                // Android fallback URLs
+                xeroMeLink.setAttribute('data-appstore-url', 'https://play.google.com/store/apps/details?id=com.xero.xerome');
+                vWorkerLink.setAttribute('data-appstore-url', 'https://play.google.com/store/apps/details?id=com.mycareconnect.vworker');
+                vGoLink.setAttribute('data-appstore-url', 'https://play.google.com/store/apps/details?id=com.visualcare.vgo');
+                employmentHeroLink.setAttribute('data-appstore-url', 'https://play.google.com/store/apps/details?id=com.employmenthero.app');
             }
         }
 
         // Initializes device-specific associated hyperlinks for its applications.
         window.addEventListener('load', setDeviceSpecificLinks);
+
+        // Add debugging information for Samsung devices
+        window.addEventListener('load', () => {
+            const deviceType = detectDeviceType();
+            if (deviceType.isSamsung) {
+                console.log('Samsung device detected:', {
+                    userAgent: navigator.userAgent,
+                    isSamsungInternet: deviceType.isSamsungInternet,
+                    serviceWorkerSupported: 'serviceWorker' in navigator,
+                    pwaSupported: 'standalone' in window.navigator
+                });
+            }
+        });
 
         // Adds click handlers for the associated hyperlinks for its applications.
         document.querySelectorAll('.web-link').forEach(link => {
